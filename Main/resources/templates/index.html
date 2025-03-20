@@ -1,0 +1,11 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>Главная страница</title>
+</head>
+<body>
+<h1 th:text="${attribute}">Сообщение</h1>
+<br><br>
+<button type="button" th:onclick="'window.location.href = \'/\''">Перейти на главную</button>
+</body>
+</html>

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="DataSourceManagerImpl" format="xml" multifile-model="true">
-    <data-source source="LOCAL" name="EasyShopDocker@localhost" uuid="64ee31c9-588d-4231-94e1-f1dd9a16dffb">
+    <data-source source="LOCAL" name="EasyShopDocker@localhost" uuid="f5c9c6e7-8c84-4d43-90e2-d7cbf028e581">
       <driver-ref>postgresql</driver-ref>
       <synchronize>true</synchronize>
       <jdbc-driver>org.postgresql.Driver</jdbc-driver>

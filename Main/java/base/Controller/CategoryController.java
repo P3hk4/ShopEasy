@@ -19,7 +19,6 @@ public class CategoryController {
     @GetMapping
     public ResponseEntity<List<Category>> getAllCategories() {
         List<Category> categories = categoryService.getAllCategories();
-        System.out.println(categories);
         return categories != null && !categories.isEmpty()
                 ? new ResponseEntity<>(categories, HttpStatus.OK)
                 : new ResponseEntity<>(HttpStatus.NOT_FOUND);

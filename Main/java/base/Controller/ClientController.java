@@ -56,21 +56,18 @@ public class ClientController {
     }
 
     @PostMapping
-    @ResponseStatus(HttpStatus.CREATED)
-    public Client save(@RequestBody Client client) {
+    public ResponseEntity<Client> save(@RequestBody Client client) {
         clientService.saveClient(client);
-        return client;
+        return new ResponseEntity<>(client, HttpStatus.CREATED);
     }
 
     @DeleteMapping("/id/{id}")
     public ResponseEntity<String> deleteClientById(@PathVariable(name = "id") int id) {
         try {
             clientService.deleteClientById(id);
-            return ResponseEntity.status(HttpStatus.NO_CONTENT).body("Клиент успено удалена");
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).body("Клиент успено удален");
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Ошибка при удалении клиента: " + e.getMessage());
         }
     }
-
-
 }

@@ -39,12 +39,12 @@ public class SecurityConfig{
                 .authorizeHttpRequests(auth ->
                         auth.requestMatchers("/").permitAll()
                                 .requestMatchers("/**").permitAll()
-                                .requestMatchers("/api/categories/**").permitAll()
-                                .requestMatchers("/api/clients/**").permitAll()
-                                .requestMatchers("/api/manufacturers/**").permitAll()
-                                .requestMatchers("/api/orders/**").permitAll()
-                                .requestMatchers("/api/products/**").permitAll()
-                                .requestMatchers("/api/shippings/**").permitAll()
+//                                .requestMatchers("/api/categories/**").permitAll()
+//                                .requestMatchers("/api/clients/**").permitAll()
+//                                .requestMatchers("/api/manufacturers/**").permitAll()
+//                                .requestMatchers("/api/orders/**").permitAll()
+//                                .requestMatchers("/api/products/**").permitAll()
+//                                .requestMatchers("/api/shippings/**").permitAll()
                 ).formLogin(AbstractAuthenticationFilterConfigurer::permitAll)
                 .build();
 
@@ -52,7 +52,7 @@ public class SecurityConfig{
 
     @Bean
     public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder(12);
+        return new BCryptPasswordEncoder(8);
     }
 
 }

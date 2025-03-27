@@ -1,5 +1,6 @@
 package base.Controller;
 
+import base.Entity.Category;
 import base.Entity.Manufacturer;
 import base.Service.ManufacturerService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,6 +41,21 @@ public class ManufacturerController {
                 : new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
-   // @PostMapping("")
+    @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
+    public Manufacturer save(@RequestBody Manufacturer manufacturer) {
+        manufacturerService.saveManufacturer(manufacturer);
+        return manufacturer;
+    }
+
+    @DeleteMapping("/id/{id}")
+    public ResponseEntity<String> deleteManufacturerById(@PathVariable(name = "id") int id) {
+        try {
+            manufacturerService.deleteManufacturerById(id);
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).body("Производитель успено удален");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Ошибка при удалении производителя: " + e.getMessage());
+        }
+    }
 
 }

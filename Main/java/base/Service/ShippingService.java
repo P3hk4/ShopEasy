@@ -38,6 +38,10 @@ public class ShippingService {
         return shippingRepository.findShippingsByCity(city);
     }
 
+    public List<Shipping> getAllShippings(){
+        return shippingRepository.findAll();
+    }
+
     public List<Shipping> getShippingsByClientIdAndAddress(int id, String address){
         return shippingRepository.findShippingsByClientIdAndAddress(id,address);
     }

@@ -1,4 +1,4 @@
-package base.Controller;
+package base.ControllerAPI;
 
 import base.Entity.Category;
 import base.Service.CategoryService;
@@ -72,7 +72,4 @@ public class CategoryController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Ошибка при удалении категории: " + e.getMessage());
         }
     }
-
-
-
 }

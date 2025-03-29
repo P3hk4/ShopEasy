@@ -1,16 +1,10 @@
-package base.Controller;
+package base.ControllerWeb;
 
-import base.DataGenerationScrypts.DataGenerator;
-import base.Entity.Client;
-import base.Entity.Order;
-import base.Entity.OrderProduct;
 import base.Service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
-
-import java.util.List;
 
 @Controller
 public class WebController {
@@ -43,8 +37,8 @@ public class WebController {
 //        clientService.saveAllClients(dataGenerator.generateClients());
 //        manufacturerService.saveAllManufacturers(dataGenerator.generateManufacturers());
 //        productService.saveAllProducts(dataGenerator.generateProducts(categoryService.getAllCategories(),manufacturerService.getAllManufacturers()));
-//        shippingService.saveAllShippings(dataGenerator.generateShippings(clientService.getAllClientsId()));
-//        orderService.saveAllOrders(dataGenerator.generateOrders(clientService.getAllClientsId(), shippingService.getAllShippingIds()));
+//        shippingService.saveAllShippings(dataGenerator.generateShippings(clientService.getAllClientsIds()));
+//        orderService.saveAllOrders(dataGenerator.generateOrders(clientService.getAllClientsIds(), shippingService.getAllShippingIds()));
 //        orderProductService.saveAllOrderProducts(dataGenerator.generateOrderProducts(orderService.getAllOrderIdsWithZeroTotalCost(),productService.getAllProductIds()));
 
 

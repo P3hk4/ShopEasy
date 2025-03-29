@@ -1,6 +1,5 @@
-package base.Controller;
+package base.ControllerAPI;
 
-import base.Entity.Category;
 import base.Entity.Manufacturer;
 import base.Service.ManufacturerService;
 import org.springframework.beans.factory.annotation.Autowired;

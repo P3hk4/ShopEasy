@@ -1,5 +1,6 @@
 package base.ControllerAPI;
 
+import base.DTO.ClientDTO;
 import base.Entity.Client;
 import base.Service.ClientService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,16 +17,16 @@ public class ClientController {
     private ClientService clientService;
 
     @GetMapping
-    public ResponseEntity<List<Client>> getAllClients() {
-        final List<Client> clients = clientService.getAllClients();
+    public ResponseEntity<List<ClientDTO>> getAllClients() {
+        final List<ClientDTO> clients = clientService.getAllClientsDTO();
         return clients != null && !clients.isEmpty()
                 ? new ResponseEntity<>(clients, HttpStatus.OK)
                 : new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
     @GetMapping("/id/{id}")
-    public ResponseEntity<Client> getClientById(@PathVariable(name = "id") int id) {
-        Client client = clientService.getClientById(id);
+    public ResponseEntity<ClientDTO> getClientById(@PathVariable(name = "id") int id) {
+        ClientDTO client = clientService.getClientDTOById(id);
         return client != null
                 ? new ResponseEntity<>(client, HttpStatus.OK)
                 : new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -40,16 +41,16 @@ public class ClientController {
     }
 
     @GetMapping("/username/{username}")
-    public ResponseEntity<Client> getClientByUsername(@PathVariable(name = "username") String username) {
-        Client client = clientService.getClientByUsername(username);
+    public ResponseEntity<ClientDTO> getClientByUsername(@PathVariable(name = "username") String username) {
+        ClientDTO client = clientService.getClientDTOByUsername(username);
         return client != null
                 ? new ResponseEntity<>(client, HttpStatus.OK)
                 : new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
     @GetMapping("/email/{email}")
-    public ResponseEntity<Client> getClientByEmail(@PathVariable(name = "email") String email) {
-        Client client = clientService.getClientByEmail(email);
+    public ResponseEntity<ClientDTO> getClientByEmail(@PathVariable(name = "email") String email) {
+        ClientDTO client = clientService.getClientDTOByEmail(email);
         return client != null
                 ? new ResponseEntity<>(client, HttpStatus.OK)
                 : new ResponseEntity<>(HttpStatus.NOT_FOUND);

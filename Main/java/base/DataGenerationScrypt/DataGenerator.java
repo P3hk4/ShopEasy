@@ -1,15 +1,13 @@
-package base.DataGenerationScrypts;
+package base.DataGenerationScrypt;
 
 import base.Entity.*;
-import org.aspectj.weaver.ast.Or;
 
-import java.lang.reflect.Array;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.temporal.ChronoUnit;
 import java.util.*;
 
-import static base.DataGenerationScrypts.StringsReaderAndWriter.readStringsFromFile;
+import static base.DataGenerationScrypt.StringsReaderAndWriter.readStringsFromFile;
 
 public class DataGenerator {
 

@@ -14,7 +14,7 @@ public class Category {
     @Column(name = "name")
     private String name;
 
-    @OneToMany
+    @OneToMany(fetch = FetchType.LAZY)
     @JoinColumn(name = "category_id")
     private List<Product> products;
 

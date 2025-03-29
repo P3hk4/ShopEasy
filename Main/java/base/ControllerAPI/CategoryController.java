@@ -1,5 +1,6 @@
 package base.ControllerAPI;
 
+import base.DTO.CategoryDTO;
 import base.Entity.Category;
 import base.Service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,24 +18,24 @@ public class CategoryController {
     private CategoryService categoryService;
 
     @GetMapping
-    public ResponseEntity<List<Category>> getAllCategories() {
-        List<Category> categories = categoryService.getAllCategories();
+    public ResponseEntity<List<CategoryDTO>> getAllCategories() {
+        List<CategoryDTO> categories = categoryService.getAllCategoriesDTO();
         return categories != null && !categories.isEmpty()
                 ? new ResponseEntity<>(categories, HttpStatus.OK)
                 : new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
     @GetMapping("/id/{id}")
-    public ResponseEntity<Category> getCategoryById(@PathVariable(name = "id") int id) {
-        Category category = categoryService.getCategoryById(id);
+    public ResponseEntity<CategoryDTO> getCategoryById(@PathVariable(name = "id") int id) {
+        CategoryDTO category = categoryService.getCategoryDTOById(id);
         return category != null
                 ? new ResponseEntity<>(category, HttpStatus.OK)
                 : new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
     @GetMapping("/name/{name}")
-    public ResponseEntity<Category> getCategoryByName(@PathVariable(name = "name") String name) {
-        Category category = categoryService.getCategoryByName(name);
+    public ResponseEntity<CategoryDTO> getCategoryByName(@PathVariable(name = "name") String name) {
+        CategoryDTO category = categoryService.getCategoryDTOByName(name);
         return category != null
                 ? new ResponseEntity<>(category, HttpStatus.OK)
                 : new ResponseEntity<>(HttpStatus.NOT_FOUND);

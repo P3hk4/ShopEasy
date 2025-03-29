@@ -24,7 +24,7 @@ public class Shipping {
     @Column(name = "City")
     private String city;
 
-    @OneToMany
+    @OneToMany(fetch = FetchType.LAZY)
     @JoinColumn(name = "Shipping_id")
     private List<Order> orders;
 

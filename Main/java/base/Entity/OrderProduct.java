@@ -27,7 +27,6 @@ public class OrderProduct {
         this.count = count;
     }
 
-
     public OrderProduct() {
     }
 

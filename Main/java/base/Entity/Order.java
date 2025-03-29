@@ -28,7 +28,7 @@ public class Order {
     @Column(name = "Date")
     private Date date;
 
-    @OneToMany
+    @OneToMany(fetch = FetchType.LAZY)
     @JoinColumn(name = "Order_id")
     private List<OrderProduct> orderProducts;
 

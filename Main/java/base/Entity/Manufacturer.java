@@ -18,7 +18,7 @@ public class Manufacturer{
     @Column(name = "Country")
     private String country;
 
-    @OneToMany
+    @OneToMany(fetch = FetchType.LAZY)
     @JoinColumn(name = "Product_id")
     private List<Product> products;
 

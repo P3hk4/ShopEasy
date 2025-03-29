@@ -36,7 +36,7 @@ public class Client {
     @JoinColumn(name = "Client_id")
     private List<Order> orders;
 
-    @OneToMany
+    @OneToMany(fetch = FetchType.LAZY)
     @JoinColumn(name = "Client_id")
     private List<Shipping> shippings;
 

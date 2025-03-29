@@ -1,5 +1,6 @@
 package base.Service;
 
+import base.DTO.ClientDTO;
 import base.Repository.ClientRepository;
 import base.Entity.Client;
 import org.hibernate.StaleObjectStateException;
@@ -71,5 +72,15 @@ public class ClientService {
     public void deleteClientById(int id){
         clientRepository.delete(getClientById(id));
     }
+
+    public List<ClientDTO> getAllClientsDTO(){
+        return clientRepository.findAllClientDTO();
+    }
+
+    public ClientDTO getClientDTOById(int id){return clientRepository.findClientDTOById(id);}
+
+    public ClientDTO getClientDTOByUsername(String username){return clientRepository.findClientDTOByUsername(username);}
+
+    public ClientDTO getClientDTOByEmail(String email){return clientRepository.findClientDTOByEmail(email);}
 
 }

@@ -1,4 +1,4 @@
-package base.Controller;
+package base.ControllerAPI;
 
 import base.Entity.Product;
 import base.Service.ProductService;

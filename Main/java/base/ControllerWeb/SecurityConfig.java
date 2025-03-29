@@ -1,4 +1,4 @@
-package base.Controller;
+package base.ControllerWeb;
 
 import base.Service.SecurityService.MyClientService;
 import org.springframework.context.annotation.Bean;

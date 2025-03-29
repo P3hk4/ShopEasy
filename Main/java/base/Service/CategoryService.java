@@ -1,7 +1,7 @@
 package base.Service;
 
+import base.DTO.CategoryDTO;
 import base.Entity.Category;
-import base.Entity.Client;
 import base.Repository.CategoryRepository;
 import org.hibernate.StaleObjectStateException;
 import org.springframework.stereotype.Service;
@@ -24,7 +24,9 @@ public class CategoryService{
 
     public Category getCategoryByName(String name){return categoryRepository.findCategoryByName(name);}
 
-    public int getCategoryIdByName(String name){return categoryRepository.findCategoryByName(name).getCategoryId();}
+    public CategoryDTO getCategoryDTOById(int id){return categoryRepository.findCategoryDTOByCategoryId(id);}
+
+    public CategoryDTO getCategoryDTOByName(String name){return categoryRepository.findCategoryDTOByName(name);}
 
     public void saveCategory(Category category){
         try {
@@ -55,9 +57,8 @@ public class CategoryService{
     }
 
     public List<Category> getAllCategories(){
-        return categoryRepository.findAllBy();
+        return categoryRepository.findAllCategoryBy();
     }
 
-
-
+    public List<CategoryDTO> getAllCategoriesDTO(){return categoryRepository.findAllCategoryDTO();}
 }

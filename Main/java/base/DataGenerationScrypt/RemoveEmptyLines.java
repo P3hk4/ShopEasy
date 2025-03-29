@@ -1,10 +1,9 @@
-package base.DataGenerationScrypts;
+package base.DataGenerationScrypt;
 
 import java.io.*;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Scanner;
 
 public class RemoveEmptyLines {
 

@@ -1,4 +1,4 @@
-package base.DataGenerationScrypts;
+package base.DataGenerationScrypt;
 
 import java.util.ArrayList;
 import java.util.List;

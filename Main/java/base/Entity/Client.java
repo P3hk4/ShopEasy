@@ -40,23 +40,13 @@ public class Client {
     @JoinColumn(name = "Client_id")
     private List<Shipping> shippings;
 
-    public List<Order> getOrders() {
-        return orders;
+    public Client(int clientId, String username, String email, String firstName, String lastName) {
+        this.clientId = clientId;
+        this.username = username;
+        this.email = email;
+        this.firstName = firstName;
+        this.lastName = lastName;
     }
-
-    public void setOrders(List<Order> orders) {
-        this.orders = orders;
-    }
-
-    public List<Shipping> getShippings() {
-        return shippings;
-    }
-
-    public void setShippings(List<Shipping> shippings) {
-        this.shippings = shippings;
-    }
-
-
 
     public Client(String username, String email, String password, String role, String firstName, String lastName) {
         this.username = username;
@@ -94,6 +84,22 @@ public class Client {
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
                 '}';
+    }
+
+    public List<Order> getOrders() {
+        return orders;
+    }
+
+    public void setOrders(List<Order> orders) {
+        this.orders = orders;
+    }
+
+    public List<Shipping> getShippings() {
+        return shippings;
+    }
+
+    public void setShippings(List<Shipping> shippings) {
+        this.shippings = shippings;
     }
 
     public int getClientId() {

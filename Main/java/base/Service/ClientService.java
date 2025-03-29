@@ -23,6 +23,17 @@ public class ClientService {
         return clientRepository.findClientByEmail(email);
     }
 
+    public void updateClient(Client client){
+        Client oldClient = clientRepository.findClientByClientId(client.getClientId());
+        if (client.getFirstName() != null) oldClient.setFirstName(client.getFirstName());
+        if (client.getLastName() != null) oldClient.setLastName(client.getLastName());
+        if (client.getEmail() != null) oldClient.setEmail(client.getEmail());
+        if (client.getPassword() != null) oldClient.setPassword(passwordEncoder.encode(client.getPassword()));
+        if (client.getUsername() != null) oldClient.setUsername(client.getUsername());
+        if (client.getRole() != null) oldClient.setRole(client.getRole());
+        clientRepository.save(oldClient);
+    }
+
     public void saveClient(Client client){
         try {
             String HashPassword =  passwordEncoder.encode(client.getPassword());

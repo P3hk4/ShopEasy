@@ -1,5 +1,6 @@
 package base.ControllerAPI;
 
+import base.DTO.ManufacturerDTO;
 import base.Entity.Manufacturer;
 import base.Service.ManufacturerService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,24 +18,24 @@ public class ManufacturerController {
     private ManufacturerService manufacturerService;
 
     @GetMapping
-    public ResponseEntity<List<Manufacturer>> getAllManufacturers(){
-        List<Manufacturer> manufacturers = manufacturerService.getAllManufacturers();
+    public ResponseEntity<List<ManufacturerDTO>> getAllManufacturers(){
+        List<ManufacturerDTO> manufacturers = manufacturerService.getAllManufacturersDTO();
         return manufacturers != null && !manufacturers.isEmpty()
                 ? new ResponseEntity<>(manufacturers, HttpStatus.OK)
                 : new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
     @GetMapping("/id/{id}")
-    public ResponseEntity<Manufacturer> getManufacturerById(@PathVariable int id){
-        Manufacturer manufacturer = manufacturerService.getManufacturerById(id);
+    public ResponseEntity<ManufacturerDTO> getManufacturerById(@PathVariable int id){
+        ManufacturerDTO manufacturer = manufacturerService.getManufacturerDTOById(id);
         return manufacturer != null
                 ? new ResponseEntity<>(manufacturer, HttpStatus.OK)
                 : new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
     @GetMapping("/country/{country}")
-    public ResponseEntity<List<Manufacturer>> getManufacturersByCountry(@PathVariable String country){
-        List<Manufacturer> manufacturers = manufacturerService.getManufacturersByCountry(country);
+    public ResponseEntity<List<ManufacturerDTO>> getManufacturersByCountry(@PathVariable String country){
+        List<ManufacturerDTO> manufacturers = manufacturerService.getAllManufacturersDTOByCountry(country);
         return manufacturers != null && !manufacturers.isEmpty()
                 ? new ResponseEntity<>(manufacturers, HttpStatus.OK)
                 : new ResponseEntity<>(HttpStatus.NOT_FOUND);

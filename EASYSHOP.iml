@@ -6,4 +6,17 @@
       <sourceFolder url="file://$MODULE_DIR$/Main/resources" type="java-resource" />
     </content>
   </component>
+  <component name="FacetManager">
+    <facet type="jpa" name="JPA">
+      <configuration>
+        <setting name="validation-enabled" value="true" />
+        <setting name="provider-name" value="Hibernate" />
+        <datasource-mapping>
+          <factory-entry name="EASYSHOP" value="f5c9c6e7-8c84-4d43-90e2-d7cbf028e581" />
+          <factory-entry name="entityManagerFactory" />
+        </datasource-mapping>
+        <naming-strategy-map />
+      </configuration>
+    </facet>
+  </component>
 </module>

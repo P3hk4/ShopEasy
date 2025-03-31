@@ -13,6 +13,14 @@ public class CategoryDTO {
     public CategoryDTO() {
     }
 
+    @Override
+    public String toString() {
+        return "CategoryDTO{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                '}';
+    }
+
     public int getId() {
         return id;
     }

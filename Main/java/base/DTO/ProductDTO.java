@@ -21,6 +21,18 @@ public class ProductDTO {
     public ProductDTO() {
     }
 
+    @Override
+    public String toString() {
+        return "ProductDTO{" +
+                "productId=" + productId +
+                ", categoryId=" + categoryId +
+                ", manufacturerId=" + manufacturerId +
+                ", name='" + name + '\'' +
+                ", description='" + description + '\'' +
+                ", price=" + price +
+                '}';
+    }
+
     public int getProductId() {
         return productId;
     }

@@ -35,6 +35,6 @@ public interface ClientRepository extends JpaRepository<Client, Long> {
     @Query("SELECT new base.DTO.ClientDTO(c.clientId, c.username, c.email, c.firstName, c.lastName) FROM Client c WHERE c.username = :username")
     ClientDTO findClientDTOByUsername(@Param("username")String username);
 
-    @Query("SELECT new base.DTO.ClientDTO(c.clientId, c.username, c.email, c.firstName, c.lastName) FROM Client c WHERE c.username = :username")
+    @Query("SELECT new base.DTO.ClientDTO(c.clientId, c.username, c.email, c.firstName, c.lastName) FROM Client c WHERE c.email = :email")
     ClientDTO findClientDTOByEmail(@Param("email")String email);
 }

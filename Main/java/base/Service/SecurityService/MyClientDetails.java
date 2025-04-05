@@ -24,6 +24,10 @@ public class MyClientDetails implements UserDetails {
                 .collect(Collectors.toList());
     }
 
+    public Client getClient() {
+        return client;
+    }
+
     @Override
     public String getPassword() {
         return client.getPassword();

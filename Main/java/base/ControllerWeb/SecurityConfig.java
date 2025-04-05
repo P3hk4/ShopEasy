@@ -44,8 +44,8 @@ public class SecurityConfig{
 //                                .requestMatchers("/api/orders/**").permitAll()
 //                                .requestMatchers("/api/products/**").permitAll()
 //                                .requestMatchers("/api/shippings/**").permitAll()
-                .build();
-
+                ).build();
+    }
 
     @Bean
     public PasswordEncoder passwordEncoder() {

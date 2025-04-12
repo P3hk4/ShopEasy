@@ -1,9 +1,6 @@
 package base.DTO;
 
-import base.Entity.Category;
-import base.Entity.Client;
-import base.Entity.Manufacturer;
-import base.Entity.Product;
+import base.Entity.*;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -38,5 +35,13 @@ public class MapperDTO {
 
     public Manufacturer dtoToEntity(ManufacturerDTO manufacturerDTO) {
         return new Manufacturer(manufacturerDTO.getManufacturerId(),manufacturerDTO.getCountry(),manufacturerDTO.getName());
+    }
+
+    public ShippingDTO entityToDTO(Shipping shipping){
+        return new ShippingDTO(shipping.getShippingId(),shipping.getClientId(),shipping.getPostCode(),shipping.getAddress(),shipping.getCity());
+    }
+
+    public Shipping dtoToEntity(ShippingDTO shippingDTO) {
+        return new Shipping(shippingDTO.getClientId(), shippingDTO.getClientId(), shippingDTO.getPostCode(), shippingDTO.getAddress(), shippingDTO.getCity());
     }
 }

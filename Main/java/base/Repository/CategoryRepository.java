@@ -24,12 +24,4 @@ public interface CategoryRepository extends JpaRepository<Category, Long> {
      @Query("SELECT c.name FROM Categories c")
      List<String> findAllCategoryNames();
 
-     @Query("SELECT new base.DTO.CategoryDTO(c.categoryId,c.name) FROM Categories c")
-     List<CategoryDTO> findAllCategoryDTO();
-
-     @Query("SELECT new base.DTO.CategoryDTO(c.categoryId,c.name) FROM Categories c WHERE c.categoryId = :id")
-     CategoryDTO findCategoryDTOByCategoryId(@Param("id") int id);
-
-     @Query("SELECT new base.DTO.CategoryDTO(c.categoryId,c.name) FROM Categories c WHERE c.name = :name")
-     CategoryDTO findCategoryDTOByName(@Param("name") String name);
 }

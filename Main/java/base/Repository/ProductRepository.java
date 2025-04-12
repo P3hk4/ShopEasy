@@ -27,16 +27,4 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
     @Query("SELECT p.productId FROM Products p")
     List<Integer> findAllProductIds();
 
-    @Query("SELECT new base.DTO.ProductDTO(p.productId,p.categoryId,p.manufacturerId,p.name,p.description,p.price) FROM Products p")
-    List<ProductDTO> findAllProductDTO();
-
-    @Query("SELECT new base.DTO.ProductDTO(p.productId,p.categoryId,p.manufacturerId,p.name,p.description,p.price) FROM Products p WHERE p.productId = :id")
-    ProductDTO findProductDTOByProductId(@Param("id") int id);
-
-    @Query("SELECT new base.DTO.ProductDTO(p.productId,p.categoryId,p.manufacturerId,p.name,p.description,p.price) FROM Products p WHERE p.categoryId = :categoryId")
-    List<ProductDTO> findAllProductDTOByCategoryId(@Param("categoryId") int id);
-
-    @Query("SELECT new base.DTO.ProductDTO(p.productId,p.categoryId,p.manufacturerId,p.name,p.description,p.price) FROM Products p WHERE p.manufacturerId = :manufacturerId")
-    List<ProductDTO> findAllProductDTOByManufacturerId(@Param("manufacturerId") int id);
-
 }

@@ -73,14 +73,4 @@ public class ClientService {
         clientRepository.delete(getClientById(id));
     }
 
-    public List<ClientDTO> getAllClientsDTO(){
-        return clientRepository.findAllClientDTO();
-    }
-
-    public ClientDTO getClientDTOById(int id){return clientRepository.findClientDTOById(id);}
-
-    public ClientDTO getClientDTOByUsername(String username){return clientRepository.findClientDTOByUsername(username);}
-
-    public ClientDTO getClientDTOByEmail(String email){return clientRepository.findClientDTOByEmail(email);}
-
 }

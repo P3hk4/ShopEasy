@@ -18,26 +18,25 @@ public class ManufacturerService {
         this.manufacturerRepository = manufacturerRepository;
     }
 
-
     public Manufacturer getManufacturerById(int id){
         return manufacturerRepository.findManufacturerByManufacturerId(id);
     }
+
     public Manufacturer getManufacturerByName(String name){
         return manufacturerRepository.findManufacturerByName(name);
     }
-    public ManufacturerDTO getManufacturerDTOById(int id){return manufacturerRepository.findManufacturerDTOById(id);}
 
-    public List<Manufacturer> getManufacturersByCountry(String country){
+    public List<Manufacturer> getAllManufacturersByCountry(String country){
         return manufacturerRepository.findManufacturersByCountry(country);
     }
+
     public List<Manufacturer> getAllManufacturers(){
         return manufacturerRepository.findAllManufacturersBy();
     }
+
     public List<Integer> getAllManufacturerIds(){
         return manufacturerRepository.findAllManufacturerIds();
     }
-    public List<ManufacturerDTO> getAllManufacturersDTO(){return manufacturerRepository.findAllManufacturerDTO();}
-    public List<ManufacturerDTO> getAllManufacturersDTOByCountry(String country){return manufacturerRepository.findAllManufacturerDTOByCountry(country);}
 
     public void saveManufacturer(Manufacturer manufacturer){
         try {
@@ -46,6 +45,7 @@ public class ManufacturerService {
             System.out.println("Конфликт при сохранении");
         }
     }
+
     public void saveAllManufacturers(ArrayList<Manufacturer> manufacturers){
         try {
             manufacturerRepository.saveAll(manufacturers);
@@ -53,6 +53,7 @@ public class ManufacturerService {
             System.out.println("Конфликт при сохранении");
         }
     }
+
     public void deleteManufacturerById(int id){
         manufacturerRepository.delete(getManufacturerById(id));
     }

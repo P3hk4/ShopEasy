@@ -24,10 +24,6 @@ public class CategoryService{
 
     public Category getCategoryByName(String name){return categoryRepository.findCategoryByName(name);}
 
-    public CategoryDTO getCategoryDTOById(int id){return categoryRepository.findCategoryDTOByCategoryId(id);}
-
-    public CategoryDTO getCategoryDTOByName(String name){return categoryRepository.findCategoryDTOByName(name);}
-
     public void saveCategory(Category category){
         try {
             categoryRepository.save(category);
@@ -59,6 +55,4 @@ public class CategoryService{
     public List<Category> getAllCategories(){
         return categoryRepository.findAllCategoryBy();
     }
-
-    public List<CategoryDTO> getAllCategoriesDTO(){return categoryRepository.findAllCategoryDTO();}
 }

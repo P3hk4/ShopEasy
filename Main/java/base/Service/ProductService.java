@@ -1,11 +1,8 @@
 package base.Service;
 
-import base.DTO.ProductDTO;
-import base.Entity.Order;
 import base.Entity.Product;
 import base.Repository.ProductRepository;
 import org.hibernate.StaleObjectStateException;
-import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -18,25 +15,20 @@ public class ProductService {
         this.productRepository = productRepository;
     }
 
-    public List<Product> getAllBy(){
+    public List<Product> getAllProducts(){
         return productRepository.findAllBy();
     }
-    public List<Product> getProductsByCategoryId(int id){
+    public List<Product> getAllProductsByCategoryId(int id){
         return  productRepository.findProductsByCategoryId(id);
     }
-    public List<Product> getProductsByManufacturerId(int id){
+    public List<Product> getAllProductsByManufacturerId(int id){
         return productRepository.findProductsByManufacturerId(id);
     }
-    public List<Product> getProductsByPriceIsBetween(int minPrice, int maxPrice){
+    public List<Product> getAllProductsByPriceIsBetween(int minPrice, int maxPrice){
         return productRepository.findProductsByPriceIsBetween(minPrice,maxPrice);
     }
     public List<Integer> getAllProductIds(){
         return productRepository.findAllProductIds();
-    }
-    public List<ProductDTO> getAllProductDTO(){return productRepository.findAllProductDTO();}
-    public List<ProductDTO> getAllProductDTOByCategoryId(int id){return productRepository.findAllProductDTOByCategoryId(id);}
-    public List<ProductDTO> getAllProductDTOByManufacturerId(int id){
-        return productRepository.findAllProductDTOByManufacturerId(id);
     }
 
     public Product getProductByName(String name){
@@ -45,7 +37,6 @@ public class ProductService {
     public Product getProductByProductId(int id){
         return productRepository.findProductByProductId(id);
     }
-    public ProductDTO getProductDTOByProductId(int id){return productRepository.findProductDTOByProductId(id);}
 
     public void saveProduct(Product product){
         try {

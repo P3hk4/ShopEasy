@@ -5,6 +5,7 @@ import base.Service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -17,6 +18,7 @@ public class OrderController {
     private OrderService orderService;
 
     @GetMapping
+    @PreAuthorize("permitAll()")
     public ResponseEntity<List<Order>> getAllOrders() {
         final List<Order> orders = orderService.getAllOrders();
         return orders != null && !orders.isEmpty()
@@ -25,6 +27,7 @@ public class OrderController {
     }
 
     @GetMapping("/id/{id}")
+    @PreAuthorize("permitAll()")
     public ResponseEntity<Order> getOrderById(@PathVariable(name = "id") int id) {
         Order order = orderService.getOrderByOrderId(id);
         return order != null
@@ -33,6 +36,7 @@ public class OrderController {
     }
 
     @GetMapping("/clients/id/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<List<Order>> getOrdersByClientsId(@PathVariable(name = "id") int id) {
         List<Order> orders = orderService.getOrdersByClientId(id);
         return orders != null
@@ -41,6 +45,7 @@ public class OrderController {
     }
 
     @GetMapping("/shippings/id/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<List<Order>> getOrdersByShippingsId(@PathVariable(name = "id") int id) {
         List<Order> orders = orderService.getOrdersByShippingId(id);
         return orders != null
@@ -49,12 +54,14 @@ public class OrderController {
     }
 
     @PostMapping
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Order> save(@RequestBody Order order) {
         orderService.saveOrder(order);
         return new ResponseEntity<>(order, HttpStatus.CREATED);
     }
 
     @DeleteMapping("/id/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<String> deleteOrderById(@PathVariable(name = "id") int id) {
         try {
             orderService.deleteOrderById(id);

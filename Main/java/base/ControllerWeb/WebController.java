@@ -46,6 +46,11 @@ public class WebController {
         return "index";
     }
 
+    @RequestMapping("/registration")
+    public String registration(){
+        return "registration";
+    }
+
 
 
 }

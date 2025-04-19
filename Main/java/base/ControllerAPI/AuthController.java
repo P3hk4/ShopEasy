@@ -4,7 +4,6 @@ import base.ControllerWeb.JwtTokenProvider;
 import base.DTO.AuthDTO;
 import base.DTO.JwtAuthResponse;
 import base.Service.SecurityService.MyClientDetails;
-import base.Service.SecurityService.MyClientService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;

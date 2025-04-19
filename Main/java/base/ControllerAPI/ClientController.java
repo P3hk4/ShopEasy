@@ -92,7 +92,7 @@ public class ClientController {
     }
 
     @PostMapping
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("permitAll()")
     public ResponseEntity<Client> save(@RequestBody Client client) {
         clientService.saveClient(client);
         return new ResponseEntity<>(client, HttpStatus.CREATED);

@@ -39,9 +39,10 @@ public class ClientService {
         try {
             String HashPassword =  passwordEncoder.encode(client.getPassword());
             client.setPassword(HashPassword);
+            client.setRole("ROLE_CLIENT");
             clientRepository.save(client);
         } catch (StaleObjectStateException e) {
-            System.out.println("Конфликт при сохранении");
+            System.out.println("Conflict on saving");
         }
     }
 
@@ -71,6 +72,21 @@ public class ClientService {
 
     public void deleteClientById(int id){
         clientRepository.delete(getClientById(id));
+    }
+
+    public void changePassword(Client client, String newPassword){
+        if (client == null) {
+            throw new IllegalArgumentException("Client cannot be null");
+        }
+        if (newPassword == null || newPassword.trim().isEmpty()) {
+            throw new IllegalArgumentException("New password cannot be null or empty");
+        }
+        try {
+            client.setPassword(passwordEncoder.encode(newPassword));
+            clientRepository.save(client);
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to change password: " + e.getMessage(), e);
+        }
     }
 
 }

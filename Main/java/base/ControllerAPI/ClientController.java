@@ -43,6 +43,18 @@ public class ClientController {
                 : new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
+    @PostMapping("/my/change-password")
+    @PreAuthorize("isAuthenticated()")
+    public ResponseEntity<String> changePassword(@RequestBody String password){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        MyClientDetails myClientDetails = null;
+        if (authentication instanceof UsernamePasswordAuthenticationToken) {
+            myClientDetails = (MyClientDetails) authentication.getPrincipal();
+        }
+        clientService.changePassword(myClientDetails.getClient(), password);
+        return new ResponseEntity<>("Пароль успешно изменён", HttpStatus.OK);
+    }
+
     @GetMapping
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<List<ClientDTO>> getAllClients() {
@@ -91,13 +103,6 @@ public class ClientController {
                 : new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
-    @PostMapping
-    @PreAuthorize("permitAll()")
-    public ResponseEntity<Client> save(@RequestBody Client client) {
-        clientService.saveClient(client);
-        return new ResponseEntity<>(client, HttpStatus.CREATED);
-    }
-
     @PutMapping
     @PreAuthorize("hasRole('ADMIN')")
     @ResponseStatus(HttpStatus.OK)
@@ -116,4 +121,5 @@ public class ClientController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Ошибка при удалении клиента: " + e.getMessage());
         }
     }
+
 }

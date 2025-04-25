@@ -3,6 +3,8 @@ package base.ControllerAPI;
 import base.ControllerWeb.JwtTokenProvider;
 import base.DTO.AuthDTO;
 import base.DTO.JwtAuthResponse;
+import base.Entity.Client;
+import base.Service.ClientService;
 import base.Service.SecurityService.MyClientDetails;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -21,10 +23,12 @@ public class AuthController {
 
     private final AuthenticationManager authenticationManager;
     private final JwtTokenProvider jwtTokenProvider;
+    private final ClientService clientService;
 
-    public AuthController(AuthenticationManager authenticationManager, JwtTokenProvider jwtTokenProvider) {
+    public AuthController(AuthenticationManager authenticationManager, JwtTokenProvider jwtTokenProvider, ClientService clientService) {
         this.authenticationManager = authenticationManager;
         this.jwtTokenProvider = jwtTokenProvider;
+        this.clientService = clientService;
     }
 
     @PostMapping("/login")
@@ -56,12 +60,12 @@ public class AuthController {
         ));
     }
 
-
-//    @PostMapping("/register")
-//    public ResponseEntity<String> register(@RequestBody RegisterDto registerDto) {
-//        // Реализация регистрации пользователя
-//        return ResponseEntity.ok("User registered successfully");
-//    }
+    @PostMapping("/register")
+    @PreAuthorize("permitAll()")
+    public ResponseEntity<String> register(@RequestBody Client client) {
+        clientService.saveClient(client);
+       return ResponseEntity.ok("User registered successfully");
+    }
 }
 
 

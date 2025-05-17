@@ -89,4 +89,8 @@ public class ClientService {
         }
     }
 
+    public boolean loginIsAvailable(String username){
+        return clientRepository.findClientByUsername(username) == null;
+    }
+
 }

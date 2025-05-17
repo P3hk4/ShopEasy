@@ -43,7 +43,7 @@ public class WebController {
 
 
         model.addAttribute("attribute",null);
-        return "index";
+        return "templatemo_559_zay_shop/index";
     }
 
     @RequestMapping("/registration")
@@ -51,6 +51,9 @@ public class WebController {
         return "registration";
     }
 
-
+    @RequestMapping("/test")
+    public String test(){
+        return "shop-single";
+    }
 
 }

@@ -68,8 +68,6 @@ public class ClientController {
     @GetMapping("/id/{id}")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<ClientDTO> getClientById(@PathVariable(name = "id") int id) {
-        System.out.println(id);
-        System.out.println(clientService.getClientById(id) + " CLIENT");
         ClientDTO clientDTO = mapperDTO.entityToDTO(clientService.getClientById(id));
         return clientDTO != null
                 ? new ResponseEntity<>(clientDTO, HttpStatus.OK)
@@ -122,4 +120,10 @@ public class ClientController {
         }
     }
 
+    @PostMapping("/login-check")
+    @PreAuthorize("permitAll()")
+    public ResponseEntity<String> loginCheck(@RequestBody String username){
+        if (clientService.loginIsAvailable(username)) return ResponseEntity.status(HttpStatus.OK).body("Логин доступен дли регистрации");
+        else return ResponseEntity.status(HttpStatus.FOUND).body("Логин уже существует");
+    }
 }

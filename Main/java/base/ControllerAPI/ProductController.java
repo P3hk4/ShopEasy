@@ -37,6 +37,44 @@ public class ProductController {
                 : new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
+    @GetMapping("/{page}")
+    @PreAuthorize("permitAll()")
+    public ResponseEntity<List<ProductDTO>> getNineProductsFrom(@PathVariable(name = "page") int page) {
+        List<ProductDTO> products = productService.getNineProductsFrom(page)
+                .stream().map(mapperDTO::entityToDTO).collect(Collectors.toList());
+        return !products.isEmpty()
+                ? new ResponseEntity<>(products, HttpStatus.OK)
+                : new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
+
+    @GetMapping("/category/{categoryId}/page/{page}")
+    @PreAuthorize("permitAll()")
+    public ResponseEntity<List<ProductDTO>> getNineProductsFromWithCategory(@PathVariable(name = "page") int page, @PathVariable(name = "categoryId") int categoryId) {
+        List<ProductDTO> products = productService.getNineProductsFromWithCategory(page,categoryId)
+                .stream().map(mapperDTO::entityToDTO).collect(Collectors.toList());
+        return !products.isEmpty()
+                ? new ResponseEntity<>(products, HttpStatus.OK)
+                : new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
+
+    @GetMapping("/category/{categoryId}/pages")
+    @PreAuthorize("permitAll()")
+    public ResponseEntity<Integer> getTotalProductsPagesWithCategory(@PathVariable(name = "categoryId") int categoryId) {
+        int totalProducts = productService.getTotalProductsPagesWithCategory(categoryId);
+        return totalProducts != 0
+                ? new ResponseEntity<>(totalProducts, HttpStatus.OK)
+                : new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
+
+    @GetMapping("/pages")
+    @PreAuthorize("permitAll()")
+    public ResponseEntity<Integer> getTotalProductsPages(){
+        int totalProducts = productService.getTotalProductsPages();
+        return totalProducts != 0
+                ? new ResponseEntity<>(totalProducts, HttpStatus.OK)
+                : new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
+
     @GetMapping("/id/{id}")
     @PreAuthorize("permitAll()")
     public ResponseEntity<ProductDTO> getProductById(@PathVariable(name = "id") int id) {

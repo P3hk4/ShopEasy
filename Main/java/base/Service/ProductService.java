@@ -30,12 +30,24 @@ public class ProductService {
     public List<Integer> getAllProductIds(){
         return productRepository.findAllProductIds();
     }
+    public List<Product> getNineProductsFrom(int page){
+        return productRepository.findNineProductsFrom((page-1)*9);
+    }
+    public List<Product> getNineProductsFromWithCategory(int page, int categoryId){
+        return productRepository.findNineProductsFromWithCategory((page-1)*9, categoryId);
+    }
 
     public Product getProductByName(String name){
         return productRepository.findProductByName(name);
     }
     public Product getProductByProductId(int id){
         return productRepository.findProductByProductId(id);
+    }
+    public Integer getTotalProductsPages(){
+        return productRepository.getTotalProductsPages();
+    }
+    public Integer getTotalProductsPagesWithCategory(int categoryId){
+        return productRepository.getTotalProductsPagesWithCategory(categoryId);
     }
 
     public void saveProduct(Product product){

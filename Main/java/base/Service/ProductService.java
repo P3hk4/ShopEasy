@@ -46,7 +46,7 @@ public class ProductService {
     public Integer getTotalProductsPages(){
         return productRepository.getTotalProductsPages();
     }
-    public Integer getTotalProductsPagesWithCategory(int categoryId){
+    public Integer getTotalProductsPagesWithCategoryById(int categoryId){
         return productRepository.getTotalProductsPagesWithCategory(categoryId);
     }
 

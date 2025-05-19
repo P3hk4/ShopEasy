@@ -3,23 +3,139 @@ let currentPage = 1;
 // Общее количество страниц (можно получить из заголовков или отдельным запросом)
 let totalPages = 1;
 
-let currentCategory = "all";
+let currentCategoryId = 0;
 
 
 document.addEventListener('DOMContentLoaded', function() {
-    // Сначала получаем общее количество страниц
-    getTotalPages()
-        .then(pages => {
-            totalPages = pages;
-            // Затем загружаем первую страницу товаров
-            loadPage(currentPage);
-        })
-        .catch(error => {
-            console.error('Ошибка при получении количества страниц:', error);
-            document.getElementById('products-container').innerHTML =
-                '<div class="col-12"><p>Произошла ошибка при загрузке данных</p></div>';
-        });
+    // Инициализация категорий
+    initCategoryLinks();
+    // Загрузка первой страницы
+    loadInitialData();
 });
+//function initCategoryLinks() {
+//    const categoryLinks = document.querySelectorAll('#collapseCategories a');
+//    categoryLinks.forEach(link => {
+//        link.addEventListener('click', function(e) {
+//            e.preventDefault();
+//            currentCategoryId = this.dataset.categoryId;
+//            currentPage = 1;
+//
+//            // Загружаем данные для выбранной категории
+//            loadCategoryData(currentCategoryId);
+//        });
+//    });
+//}
+
+function initCategoryLinks() {
+    const categoryLinks = document.querySelectorAll('#collapseCategories a');
+    categoryLinks.forEach(link => {
+        link.addEventListener('click', function(e) {
+            e.preventDefault();
+
+            // Удаляем активный класс у всех ссылок
+            categoryLinks.forEach(l => l.classList.remove('active-category'));
+            // Добавляем активный класс к выбранной ссылке
+            this.classList.add('active-category');
+
+            currentCategoryId = parseInt(this.dataset.categoryId);
+            currentPage = 1;
+
+            loadCategoryData(currentCategoryId);
+        });
+    });
+}
+
+function loadInitialData() {
+    if (currentCategoryId === 0) {
+        getTotalPages()
+            .then(pages => {
+                totalPages = pages;
+                loadPage(currentPage);
+            })
+            .catch(handleError);
+    } else {
+        loadCategoryData(currentCategoryId);
+    }
+}
+
+//function loadCategoryData(currentCategoryId) {
+//    if (currentCategoryId === "0") {
+//        getTotalPages()
+//            .then(pages => {
+//                totalPages = pages;
+//                loadPage(currentPage);
+//            })
+//            .catch(handleError);
+//    } else {
+//    let id = 0;
+//    id = currentCategoryId;
+//        fetch(`/api/products/category/${id}/pages`)
+//            .then(response => {
+//                if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+//                return response.json();
+//            })
+//            .then(pages => {
+//                totalPages = pages;
+//                fetchProductsByCategory(currentCategoryId, currentPage);
+//            })
+//            .catch(handleError);
+//    }
+//}
+
+function loadCategoryData(categoryId) {
+    if (categoryId === 0) {
+        getTotalPages()
+            .then(pages => {
+                totalPages = pages;
+                loadPage(currentPage);
+            })
+            .catch(handleError);
+    } else {
+        fetch(`/api/products/category/${categoryId}/pages`)
+            .then(response => {
+                if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+                return response.json();
+            })
+            .then(pages => {
+                totalPages = pages;
+                loadPage(currentPage, categoryId); // Передаем categoryId в loadPage
+            })
+            .catch(handleError);
+    }
+}
+
+function fetchProductsByCategory(currentCategoryId, page) {
+    const url = currentCategoryId === 0
+        ? `/api/products/${page}`
+        : `/api/products/category/${currentCategoryId}/page/${page}`;
+
+    fetch(url, {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+        }
+    })
+    .then(response => {
+        if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+        return response.json();
+    })
+    .then(data => {
+        if (data && data.length > 0) {
+            displayProducts(data);
+            updatePagination(currentPage);
+        } else {
+            document.getElementById('products-container').innerHTML =
+                '<div class="col-12"><p>Товары не найдены</p></div>';
+        }
+    })
+    .catch(handleError);
+}
+
+function handleError(error) {
+    console.error('Ошибка:', error);
+    document.getElementById('products-container').innerHTML =
+        '<div class="col-12"><p>Произошла ошибка при загрузке товаров</p></div>';
+}
 
 // Функция для получения общего количества страниц
 function getTotalPages() {
@@ -40,40 +156,68 @@ function getTotalPages() {
 }
 
 // Функция для загрузки страницы
-function loadPage(page) {
+//function loadPage(page) {
+//
+//    // Отправляем POST-запрос как указано в API
+//    fetch(`/api/products/${page}`, {
+//        method: 'GET',
+//        headers: {
+//            'Content-Type': 'application/json',
+//        }
+//    })
+//        .then(response => {
+//            if (!response.ok) {
+//                throw new Error(`HTTP error! status: ${response.status}`);
+//            }
+//            return response.json();
+//        })
+//        .then(data => {
+//            if (data && data.length > 0) {
+//                console.log(data);
+//                displayProducts(data);
+//                updatePagination(page);
+//                currentPage = page;
+//
+//                // Если у вас есть информация об общем количестве страниц:
+//                // totalPages = data.totalPages; или из заголовков
+//            } else {
+//                document.getElementById('products-container').innerHTML =
+//                    '<div class="col-12"><p>Товары не найдены</p></div>';
+//            }
+//        })
+//        .catch(error => {
+//            console.error('Ошибка:', error);
+//            document.getElementById('products-container').innerHTML =
+//                '<div class="col-12"><p>Произошла ошибка при загрузке товаров</p></div>';
+//        });
+//}
 
-    // Отправляем POST-запрос как указано в API
-    fetch(`/api/products/${page}`, {
+function loadPage(page, categoryId = currentCategoryId) {
+    const url = categoryId === 0
+        ? `/api/products/${page}`
+        : `/api/products/category/${categoryId}/page/${page}`;
+
+    fetch(url, {
         method: 'GET',
         headers: {
             'Content-Type': 'application/json',
         }
     })
-        .then(response => {
-            if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
-            }
-            return response.json();
-        })
-        .then(data => {
-            if (data && data.length > 0) {
-                console.log(data);
-                displayProducts(data);
-                updatePagination(page);
-                currentPage = page;
-
-                // Если у вас есть информация об общем количестве страниц:
-                // totalPages = data.totalPages; или из заголовков
-            } else {
-                document.getElementById('products-container').innerHTML =
-                    '<div class="col-12"><p>Товары не найдены</p></div>';
-            }
-        })
-        .catch(error => {
-            console.error('Ошибка:', error);
+    .then(response => {
+        if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+        return response.json();
+    })
+    .then(data => {
+        if (data && data.length > 0) {
+            displayProducts(data);
+            updatePagination(page, categoryId); // Обновляем пагинацию с учетом категории
+            currentPage = page;
+        } else {
             document.getElementById('products-container').innerHTML =
-                '<div class="col-12"><p>Произошла ошибка при загрузке товаров</p></div>';
-        });
+                '<div class="col-12"><p>Товары не найдены</p></div>';
+        }
+    })
+    .catch(handleError);
 }
 
     function formatCategoryId(id) {
@@ -125,11 +269,104 @@ function loadPage(page) {
 }
 
 // Обновление пагинации
-function updatePagination(currentPage) {
+//function updatePagination(currentPage) {
+//    const pagination = document.getElementById('pagination');
+//    pagination.innerHTML = '';
+//
+//    // Добавляем кнопку "Назад"
+//    const prevItem = document.createElement('li');
+//    prevItem.className = `page-item ${currentPage === 1 ? 'disabled' : ''}`;
+//    const prevLink = document.createElement('a');
+//    prevLink.className = 'page-link rounded-0 mr-3 shadow-sm border-top-0 border-left-0 text-dark';
+//    prevLink.href = '#';
+//    prevLink.innerHTML = '&laquo;';
+//    prevLink.addEventListener('click', (e) => {
+//        e.preventDefault();
+//        if (currentPage > 1) loadPage(currentPage - 1);
+//    });
+//    prevItem.appendChild(prevLink);
+//    pagination.appendChild(prevItem);
+//
+//    // Всегда показываем первую страницу
+//    if (currentPage > 4) {
+//        addPageNumber(1);
+//        if (currentPage > 5) {
+//            addEllipsis();
+//        }
+//    }
+//
+//    // Определяем диапазон страниц для отображения
+//    const startPage = Math.max(1, currentPage - 3);
+//    const endPage = Math.min(totalPages, currentPage + 3);
+//
+//    // Добавляем страницы в диапазоне
+//    for (let i = startPage; i <= endPage; i++) {
+//        addPageNumber(i);
+//    }
+//
+//    // Всегда показываем последнюю страницу
+//    if (currentPage < totalPages - 3) {
+//        if (currentPage < totalPages - 4) {
+//            addEllipsis();
+//        }
+//        addPageNumber(totalPages);
+//    }
+//
+//    // Добавляем кнопку "Вперед"
+//    const nextItem = document.createElement('li');
+//    nextItem.className = `page-item ${currentPage === totalPages ? 'disabled' : ''}`;
+//    const nextLink = document.createElement('a');
+//    nextLink.className = 'page-link rounded-0 shadow-sm border-top-0 border-left-0 text-dark';
+//    nextLink.href = '#';
+//    nextLink.innerHTML = '&raquo;';
+//    nextLink.addEventListener('click', (e) => {
+//        e.preventDefault();
+//        if (currentPage < totalPages) loadPage(currentPage + 1);
+//    });
+//    nextItem.appendChild(nextLink);
+//    pagination.appendChild(nextItem);
+//
+//    // Вспомогательная функция для добавления номера страницы
+//    function addPageNumber(pageNumber) {
+//        // Не добавляем дубликаты (может быть, если текущая страница близка к краям)
+//        if (pagination.querySelector(`a[data-page="${pageNumber}"]`)) return;
+//
+//        const pageItem = document.createElement('li');
+//        pageItem.className = 'page-item';
+//
+//        const pageLink = document.createElement('a');
+//        pageLink.className = `page-link rounded-0 mr-3 shadow-sm border-top-0 border-left-0 ${pageNumber === currentPage ? 'active' : 'text-dark'}`;
+//        pageLink.href = '#';
+//        pageLink.textContent = pageNumber;
+//        pageLink.dataset.page = pageNumber;
+//
+//        pageLink.addEventListener('click', (e) => {
+//            e.preventDefault();
+//            if (pageNumber !== currentPage) loadPage(pageNumber);
+//        });
+//
+//        pageItem.appendChild(pageLink);
+//        pagination.appendChild(pageItem);
+//    }
+//
+//    // Вспомогательная функция для добавления многоточия
+//    function addEllipsis() {
+//        const ellipsisItem = document.createElement('li');
+//        ellipsisItem.className = 'page-item disabled';
+//        const ellipsisLink = document.createElement('a');
+//        ellipsisLink.className = 'page-link rounded-0 mr-3 shadow-sm border-top-0 border-left-0';
+//        ellipsisLink.href = '#';
+//        ellipsisLink.innerHTML = '...';
+//        ellipsisItem.appendChild(ellipsisLink);
+//        pagination.appendChild(ellipsisItem);
+//    }
+//}
+
+function updatePagination(currentPage, categoryId = currentCategoryId) {
     const pagination = document.getElementById('pagination');
     pagination.innerHTML = '';
 
-    // Добавляем кнопку "Назад"
+    // Кнопка "Назад"
     const prevItem = document.createElement('li');
     prevItem.className = `page-item ${currentPage === 1 ? 'disabled' : ''}`;
     const prevLink = document.createElement('a');
@@ -138,37 +375,36 @@ function updatePagination(currentPage) {
     prevLink.innerHTML = '&laquo;';
     prevLink.addEventListener('click', (e) => {
         e.preventDefault();
-        if (currentPage > 1) loadPage(currentPage - 1);
+        if (currentPage > 1) loadPage(currentPage - 1, categoryId);
     });
     prevItem.appendChild(prevLink);
     pagination.appendChild(prevItem);
 
-    // Всегда показываем первую страницу
+    // Показываем первую страницу
     if (currentPage > 4) {
-        addPageNumber(1);
+        addPageNumber(1, categoryId);
         if (currentPage > 5) {
             addEllipsis();
         }
     }
 
-    // Определяем диапазон страниц для отображения
+    // Диапазон страниц
     const startPage = Math.max(1, currentPage - 3);
     const endPage = Math.min(totalPages, currentPage + 3);
 
-    // Добавляем страницы в диапазоне
     for (let i = startPage; i <= endPage; i++) {
-        addPageNumber(i);
+        addPageNumber(i, categoryId);
     }
 
-    // Всегда показываем последнюю страницу
+    // Показываем последнюю страницу
     if (currentPage < totalPages - 3) {
         if (currentPage < totalPages - 4) {
             addEllipsis();
         }
-        addPageNumber(totalPages);
+        addPageNumber(totalPages, categoryId);
     }
 
-    // Добавляем кнопку "Вперед"
+    // Кнопка "Вперед"
     const nextItem = document.createElement('li');
     nextItem.className = `page-item ${currentPage === totalPages ? 'disabled' : ''}`;
     const nextLink = document.createElement('a');
@@ -177,35 +413,34 @@ function updatePagination(currentPage) {
     nextLink.innerHTML = '&raquo;';
     nextLink.addEventListener('click', (e) => {
         e.preventDefault();
-        if (currentPage < totalPages) loadPage(currentPage + 1);
+        if (currentPage < totalPages) loadPage(currentPage + 1, categoryId);
     });
     nextItem.appendChild(nextLink);
     pagination.appendChild(nextItem);
 
-    // Вспомогательная функция для добавления номера страницы
-    function addPageNumber(pageNumber) {
-        // Не добавляем дубликаты (может быть, если текущая страница близка к краям)
+    function addPageNumber(pageNumber, catId) {
         if (pagination.querySelector(`a[data-page="${pageNumber}"]`)) return;
 
         const pageItem = document.createElement('li');
         pageItem.className = 'page-item';
 
         const pageLink = document.createElement('a');
-        pageLink.className = `page-link rounded-0 mr-3 shadow-sm border-top-0 border-left-0 ${pageNumber === currentPage ? 'active' : 'text-dark'}`;
+        pageLink.className = `page-link rounded-0 mr-3 shadow-sm border-top-0 border-left-0 ${
+            pageNumber === currentPage ? 'active' : 'text-dark'
+        }`;
         pageLink.href = '#';
         pageLink.textContent = pageNumber;
         pageLink.dataset.page = pageNumber;
 
         pageLink.addEventListener('click', (e) => {
             e.preventDefault();
-            if (pageNumber !== currentPage) loadPage(pageNumber);
+            if (pageNumber !== currentPage) loadPage(pageNumber, catId);
         });
 
         pageItem.appendChild(pageLink);
         pagination.appendChild(pageItem);
     }
 
-    // Вспомогательная функция для добавления многоточия
     function addEllipsis() {
         const ellipsisItem = document.createElement('li');
         ellipsisItem.className = 'page-item disabled';
@@ -217,3 +452,4 @@ function updatePagination(currentPage) {
         pagination.appendChild(ellipsisItem);
     }
 }
+

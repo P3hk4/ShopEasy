@@ -49,7 +49,7 @@ public class ProductController {
 
     @GetMapping("/category/{categoryId}/page/{page}")
     @PreAuthorize("permitAll()")
-    public ResponseEntity<List<ProductDTO>> getNineProductsFromWithCategory(@PathVariable(name = "page") int page, @PathVariable(name = "categoryId") int categoryId) {
+    public ResponseEntity<List<ProductDTO>> getNineProductsFromWithCategoryById(@PathVariable(name = "page") int page, @PathVariable(name = "categoryId") int categoryId) {
         List<ProductDTO> products = productService.getNineProductsFromWithCategory(page,categoryId)
                 .stream().map(mapperDTO::entityToDTO).collect(Collectors.toList());
         return !products.isEmpty()
@@ -59,8 +59,8 @@ public class ProductController {
 
     @GetMapping("/category/{categoryId}/pages")
     @PreAuthorize("permitAll()")
-    public ResponseEntity<Integer> getTotalProductsPagesWithCategory(@PathVariable(name = "categoryId") int categoryId) {
-        int totalProducts = productService.getTotalProductsPagesWithCategory(categoryId);
+    public ResponseEntity<Integer> getTotalProductsPagesWithCategoryById(@PathVariable(name = "categoryId") int categoryId) {
+        int totalProducts = productService.getTotalProductsPagesWithCategoryById(categoryId);
         return totalProducts != 0
                 ? new ResponseEntity<>(totalProducts, HttpStatus.OK)
                 : new ResponseEntity<>(HttpStatus.NOT_FOUND);

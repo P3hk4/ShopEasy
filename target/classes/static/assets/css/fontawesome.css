@@ -8,6 +8,11 @@
 .fal,
 .fad,
 .fab {
+
+.active-category {
+    font-weight: bold;
+    color: #28a745 !important; /* Зеленый цвет как в вашей теме */
+}
   -moz-osx-font-smoothing: grayscale;
   -webkit-font-smoothing: antialiased;
   display: inline-block;

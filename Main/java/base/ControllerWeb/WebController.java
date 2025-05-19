@@ -27,10 +27,10 @@ public class WebController {
 
     @RequestMapping("/")
     public String homePage(Model model){
-        return "homePage";
+        return "index";
     }
 
-    @RequestMapping("/index")
+    @RequestMapping("/test")
     public String index(Model model){
 //        DataGenerator dataGenerator = new DataGenerator();
 //        categoryService.saveAllCategories(dataGenerator.generateCategories());
@@ -43,7 +43,7 @@ public class WebController {
 
 
         model.addAttribute("attribute",null);
-        return "index";
+        return "homePage";
     }
 
     @RequestMapping("/registration")
@@ -61,10 +61,6 @@ public class WebController {
         return "contact";
     }
 
-    @RequestMapping("/homePage")
-    public String test(){
-        return "contact";
-    }
 
     @RequestMapping("/login")
     public String login(){return "login";}
@@ -77,4 +73,7 @@ public class WebController {
 
     @RequestMapping("/shop-single")
     public String shopsingle(){return "shop-single";}
+
+    @RequestMapping("/basket")
+    public String basket(){return "basket";}
 }

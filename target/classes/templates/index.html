@@ -40,7 +40,7 @@
     <nav class="navbar navbar-expand-lg navbar-light shadow">
         <div class="container d-flex justify-content-between align-items-center">
 
-            <a class="navbar-brand text-success logo h1 align-self-center" href="index">
+            <a class="navbar-brand text-success logo h1 align-self-center" href="/">
              Easy Shop
             </a>
 
@@ -52,7 +52,7 @@
                 <div class="flex-fill">
                     <ul class="nav navbar-nav d-flex justify-content-between mx-lg-auto">
                         <li class="nav-item">
-                            <a class="nav-link" href="index">Главная</a>
+                            <a class="nav-link" href="">Главная</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="shop">Магазин</a>
@@ -176,21 +176,51 @@
               
             </div>
         </div>
+<!--        <div class="row">-->
+<!--            <div class="col-12 col-md-4 p-5 mt-3">-->
+<!--                <a href="#"><img src="assets/img/category_img_00.jpg" class="rounded-circle img-fluid border"></a>-->
+<!--                <h5 class="text-center mt-3 mb-3">Одежда</h5>-->
+<!--                <p class="text-center"><a class="btn btn-success">В магазин</a></p>-->
+<!--            </div>-->
+<!--            <div class="col-12 col-md-4 p-5 mt-3">-->
+<!--                <a href="#"><img src="assets/img/category_img_02.jpg" class="rounded-circle img-fluid border"></a>-->
+<!--                <h2 class="h5 text-center mt-3 mb-3">Обувь</h2>-->
+<!--                <p class="text-center"><a class="btn btn-success">В магазин</a></p>-->
+<!--            </div>-->
+<!--            <div class="col-12 col-md-4 p-5 mt-3">-->
+<!--                <a href="#"><img src="assets/img/category_img_03.jpg" class="rounded-circle img-fluid border"></a>-->
+<!--                <h2 class="h5 text-center mt-3 mb-3">Аксессуары</h2>-->
+<!--                <p class="text-center"><a class="btn btn-success">В магазин</a></p>-->
+<!--            </div>-->
+<!--        </div>-->
+        <!-- В разделе Categories of The Month -->
         <div class="row">
             <div class="col-12 col-md-4 p-5 mt-3">
                 <a href="#"><img src="assets/img/category_img_00.jpg" class="rounded-circle img-fluid border"></a>
                 <h5 class="text-center mt-3 mb-3">Одежда</h5>
-                <p class="text-center"><a class="btn btn-success">В магазин</a></p>
+                <p class="text-center">
+                    <a class="btn btn-success" href="shop" onclick="localStorage.setItem('preselectedCategory', '0')">
+                        В магазин
+                    </a>
+                </p>
             </div>
             <div class="col-12 col-md-4 p-5 mt-3">
                 <a href="#"><img src="assets/img/category_img_02.jpg" class="rounded-circle img-fluid border"></a>
-                <h2 class="h5 text-center mt-3 mb-3">Обувь</h2>
-                <p class="text-center"><a class="btn btn-success">В магазин</a></p>
+                <h2 class="h5 text-center mt-3 mb-3">Кроссовки</h2>
+                <p class="text-center">
+                    <a class="btn btn-success" href="shop" onclick="localStorage.setItem('preselectedCategory', '39')">
+                        В магазин
+                    </a>
+                </p>
             </div>
             <div class="col-12 col-md-4 p-5 mt-3">
                 <a href="#"><img src="assets/img/category_img_03.jpg" class="rounded-circle img-fluid border"></a>
                 <h2 class="h5 text-center mt-3 mb-3">Аксессуары</h2>
-                <p class="text-center"><a class="btn btn-success">В магазин</a></p>
+                <p class="text-center">
+                    <a class="btn btn-success" href="shop" onclick="localStorage.setItem('preselectedCategory', '1')">
+                        В магазин
+                    </a>
+                </p>
             </div>
         </div>
     </section>
@@ -208,50 +238,10 @@
             </div>
             <div class="row">
                 <div class="col-12 col-md-4 mb-4">
-                    <div class="card h-100">
-                        <a href="shop-single.html">
-                            <img src="https://i.pinimg.com/736x/ad/0a/89/ad0a89372f01989ef4d4235941930a84.jpg" class="card-img-top" alt="...">
-                        </a>
-                        <div class="card-body">
-                            <ul class="list-unstyled d-flex justify-content-between">
-                                
-                                <li class="text-muted text-right">$103.00</li>
-                            </ul>
-                            <a href="shop-single.html" class="h2 text-decoration-none text-dark">Кроссовки Nike Dunk Low Twist </a>
-                            
-                        </div>
-                    </div>
                 </div>
                 <div class="col-12 col-md-4 mb-4">
-                    <div class="card h-100">
-                        <a href="shop-single.html">
-                            <img src="https://i.pinimg.com/736x/7b/3a/9a/7b3a9a05d5c49d9e50b02e41594f2c58.jpg" class="card-img-top" alt="...">
-                        </a>
-                        <div class="card-body">
-                            <ul class="list-unstyled d-flex justify-content-between">
-                              
-                                <li class="text-muted text-right">$78.00</li>
-                            </ul>
-                            <a href="shop-single.html" class="h2 text-decoration-none text-dark">Свитшот Asics</a>
-                           
-                          
-                        </div>
-                    </div>
                 </div>
                 <div class="col-12 col-md-4 mb-4">
-                    <div class="card h-100">
-                        <a href="shop-single.html">
-                            <img src="https://i.pinimg.com/736x/77/16/13/7716137318f73b9262ec533f023beda3.jpg" class="card-img-top" alt="...">
-                        </a>
-                        <div class="card-body">
-                            <ul class="list-unstyled d-flex justify-content-between">
-                               
-                                <li class="text-muted text-right">$50.00</li>
-                            </ul>
-                            <a href="shop-single.html" class="h2 text-decoration-none text-dark">Кепка Nike</a>
-                          
-                        </div>
-                    </div>
                 </div>
             </div>
         </div>
@@ -279,23 +269,15 @@
                 </div>
 
                 <div class="col-md-4 pt-5">
-                    <h2 class="h2 text-light border-bottom pb-3 border-light">Товары</h2>
-                    <ul class="list-unstyled text-light footer-link-list">
-                        <li><a class="text-decoration-none" href="#">Премиум</a></li>
-                        <li><a class="text-decoration-none" href="#">Спортивная одежда</a></li>
-                        <li><a class="text-decoration-none" href="#">Мужская обувь</a></li>
-                        <li><a class="text-decoration-none" href="#">Женская обувь</a></li>
-                        <li><a class="text-decoration-none" href="#">Популярная одежда</a></li>
-                        <li><a class="text-decoration-none" href="#">Спортивная обувь</a></li>
-                    </ul>
+
                 </div>
 
                 <div class="col-md-4 pt-5">
-                    <h2 class="h2 text-light border-bottom pb-3 border-light">Дополнительная информация</h2>
+                    <h2 class="h2 text-light border-bottom pb-3 border-light">Прочее</h2>
                     <ul class="list-unstyled text-light footer-link-list">
-                        <li><a class="text-decoration-none" href="#">Главная</a></li>
-                        <li><a class="text-decoration-none" href="#">Вопросы и ответы</a></li>
-                        <li><a class="text-decoration-none" href="#">Контакты</a></li>
+                        <li><a class="text-decoration-none" href="/">Главная</a></li>
+                        <li><a class="text-decoration-none" href="email@mail.com">Вопросы и ответы</a></li>
+                        <li><a class="text-decoration-none" href="/contact">Контакты</a></li>
                     </ul>
                 </div>
             </div>
@@ -328,7 +310,15 @@
     <script src="assets/js/jquery-migrate-1.2.1.min.js"></script>
     <script src="assets/js/bootstrap.bundle.min.js"></script>
     <script src="assets/js/templatemo.js"></script>
-    <script src="assets/js/custom.js"></script>
+    <script src="assets/js/index.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Очищаем localStorage при обычном переходе на страницу
+            if (!localStorage.getItem('preselectedCategory')) {
+                localStorage.removeItem('preselectedCategory');
+            }
+        });
+    </script>
     <!-- End Script -->
 </body>
 

@@ -3,8 +3,7 @@ let currentPage = 1;
 // Общее количество страниц (можно получить из заголовков или отдельным запросом)
 let totalPages = 1;
 
-let currentCategoryId = 0;
-
+let currentCategory =  parseInt(localStorage.getItem('preselectedCategory')) || "0";
 
 document.addEventListener('DOMContentLoaded', function() {
     // Инициализация категорий
@@ -19,21 +18,43 @@ function initCategoryLinks() {
         link.addEventListener('click', function(e) {
             e.preventDefault();
 
-            // Удаляем активный класс у всех ссылок
-            categoryLinks.forEach(l => l.classList.remove('active-category'));
-            // Добавляем активный класс к выбранной ссылке
-            this.classList.add('active-category');
+            // // Удаляем активный класс у всех ссылок
+            // categoryLinks.forEach(l => l.classList.remove('active-category'));
+            // // Добавляем активный класс к выбранной ссылке
+            // this.classList.add('active-category');
+            //
+            // currentCategoryId = parseInt(this.dataset.categoryId);
+            // currentPage = 1;
+            //
+            // loadCategoryData(currentCategoryId);
 
-            currentCategoryId = parseInt(this.dataset.categoryId);
+            const categoryId = this.getAttribute('data-category-id');
+            currentCategory = categoryId;
+            localStorage.removeItem('preselectedCategory'); // Очищаем после использования
             currentPage = 1;
 
-            loadCategoryData(currentCategoryId);
+            //updateActiveCategory(categoryId);
+            loadCategoryData(categoryId);
         });
     });
+
+    // Если есть предварительно выбранная категория - активируем её
+    if (currentCategory !== "0") {
+        const categoryLink = document.querySelector(`#collapseCategories a[data-category-id="${currentCategory}"]`);
+        if (categoryLink) {
+            categoryLink.classList.add('active-category');
+            // Прокручиваем к выбранной категории
+            setTimeout(() => {
+                categoryLink.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            }, 100);
+        }
+    }
+
+
 }
 
 function loadInitialData() {
-    if (currentCategoryId === 0) {
+    if (currentCategory === "0") {
         getTotalPages()
             .then(pages => {
                 totalPages = pages;
@@ -41,12 +62,13 @@ function loadInitialData() {
             })
             .catch(handleError);
     } else {
-        loadCategoryData(currentCategoryId);
+        loadCategoryData(currentCategory);
     }
+    localStorage.removeItem('preselectedCategory'); // Очищаем после использования
 }
 
 function loadCategoryData(categoryId) {
-    if (categoryId === 0) {
+    if (categoryId === "0") {
         getTotalPages()
             .then(pages => {
                 totalPages = pages;
@@ -118,8 +140,8 @@ function getTotalPages() {
         });
 }
 
-function loadPage(page, categoryId = currentCategoryId) {
-    const url = categoryId === 0
+function loadPage(page, categoryId = currentCategory) {
+    const url = categoryId === "0"
         ? `/api/products/${page}`
         : `/api/products/category/${categoryId}/page/${page}`;
 
@@ -161,17 +183,17 @@ function loadPage(page, categoryId = currentCategoryId) {
         <div class="col-md-4">
             <div class="card mb-4 product-wap rounded-0">
                 <div class="card rounded-0">
-                    <img class="card-img rounded-0 img-fluid" src="/assets/img/product_category_${String(formatCategoryId(product.categoryId))}.jpg"">
+                    <img class="card-img rounded-0 img-fluid" src="/assets/img/product_category_${String(formatCategoryId(product.categoryId))}.jpg">
                     <div class="card-img-overlay rounded-0 product-overlay d-flex align-items-center justify-content-center">
                         <ul class="list-unstyled">
-                            <li><a class="btn btn-success text-white" href="shop-single.html?id=${product.id}"><i class="far fa-heart"></i></a></li>
-                            <li><a class="btn btn-success text-white mt-2" href="shop-single.html?id=${product.id}"><i class="far fa-eye"></i></a></li>
-                            <li><a class="btn btn-success text-white mt-2" href="shop-single.html?id=${product.id}"><i class="fas fa-cart-plus"></i></a></li>
+                            <li><a class="btn btn-success text-white" href="shop-single?id=${product.productId}"><i class="far fa-heart"></i></a></li>
+                            <li><a class="btn btn-success text-white mt-2" href="shop-single?id=${product.productId}"><i class="far fa-eye"></i></a></li>
+                            <li><a class="btn btn-success text-white mt-2" href="shop-single?id=${product.productId}"><i class="fas fa-cart-plus"></i></a></li>
                         </ul>
                     </div>
                 </div>
                 <div class="card-body">
-                    <a href="shop-single.html?id=${product.id}" class="h3 text-decoration-none">${product.name || 'Название товара'}</a>
+                    <a href="shop-single?id=${product.productId}" class="h3 text-decoration-none">${product.name || 'Название товара'}</a>
                     <ul class="w-100 list-unstyled d-flex justify-content-between mb-0">
                         <li class="pt-2">
                             ${generateColorDots(product.colors || ['red', 'blue', 'black'])}

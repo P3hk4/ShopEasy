@@ -43,6 +43,27 @@ public class ClientController {
                 : new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
+    @PutMapping("/my")
+    @PreAuthorize("isAuthenticated()")
+    public ResponseEntity<String> editMyClient(@RequestBody Client client){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        MyClientDetails myClientDetails = null;
+        if (authentication instanceof UsernamePasswordAuthenticationToken) {
+            myClientDetails = (MyClientDetails) authentication.getPrincipal();
+        }
+        Client clientDetails = myClientDetails.getClient();
+        clientService.updateClient(new Client(
+                clientDetails.getClientId(),
+                clientDetails.getUsername(),
+                client.getEmail(),
+                client.getPassword(),
+                clientDetails.getRole(),
+                client.getFirstName(),
+                client.getLastName()
+                ));
+        return new ResponseEntity<>("Данные успешно изменены", HttpStatus.OK);
+    }
+
     @PostMapping("/my/change-password")
     @PreAuthorize("isAuthenticated()")
     public ResponseEntity<String> changePassword(@RequestBody String password){

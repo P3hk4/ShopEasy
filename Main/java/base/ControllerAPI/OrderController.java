@@ -1,11 +1,16 @@
 package base.ControllerAPI;
 
+import base.DTO.ClientDTO;
 import base.Entity.Order;
 import base.Service.OrderService;
+import base.Service.SecurityService.MyClientDetails;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -22,6 +27,21 @@ public class OrderController {
     public ResponseEntity<List<Order>> getAllOrders() {
         final List<Order> orders = orderService.getAllOrders();
         return orders != null && !orders.isEmpty()
+                ? new ResponseEntity<>(orders, HttpStatus.OK)
+                : new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
+
+    @GetMapping("/my")
+    @PreAuthorize("isAuthenticated()")
+    public ResponseEntity<List<Order>> getMyOrders() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        MyClientDetails myClientDetails = null;
+        if (authentication instanceof UsernamePasswordAuthenticationToken) {
+            myClientDetails = (MyClientDetails) authentication.getPrincipal();
+
+        }
+        List<Order> orders = orderService.getOrdersByClientId(myClientDetails.getClient().getClientId());
+        return orders != null
                 ? new ResponseEntity<>(orders, HttpStatus.OK)
                 : new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }

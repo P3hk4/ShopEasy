@@ -31,7 +31,7 @@ public class WebController {
     }
 
     @RequestMapping("/test")
-    public String index(Model model){
+    public String index(){
 //        DataGenerator dataGenerator = new DataGenerator();
 //        categoryService.saveAllCategories(dataGenerator.generateCategories());
 //        clientService.saveAllClients(dataGenerator.generateClients());
@@ -41,9 +41,7 @@ public class WebController {
 //        orderService.saveAllOrders(dataGenerator.generateOrders(clientService.getAllClientsIds(), shippingService.getAllShippingIds()));
 //        orderProductService.saveAllOrderProducts(dataGenerator.generateOrderProducts(orderService.getAllOrderIdsWithZeroTotalCost(),productService.getAllProductIds()));
 
-
-        model.addAttribute("attribute",null);
-        return "homePage";
+        return "index";
     }
 
     @RequestMapping("/registration")
@@ -66,7 +64,7 @@ public class WebController {
     public String login(){return "login";}
 
     @RequestMapping("/loginafter")
-    public String loginafter(){return "loginafter";}
+    public String loginafter(){return "login";}
 
     @RequestMapping("/shop")
     public String shop(){return "shop";}
@@ -76,4 +74,7 @@ public class WebController {
 
     @RequestMapping("/basket")
     public String basket(){return "basket";}
+
+    @RequestMapping("/account")
+    public String account(){return "account";}
 }

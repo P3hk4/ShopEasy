@@ -11,6 +11,7 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractAuthenticationFilterConfigurer;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -61,20 +62,24 @@ public class SecurityConfig{
                 .authorizeHttpRequests(auth ->
                         auth.requestMatchers("/**").permitAll()
                                 .requestMatchers("/api/auth/login").permitAll()
-//                                .requestMatchers("/index").authenticated()
-//                                .requestMatchers("/api/clients/**").hasAuthority("ROLE_ADMIN")
-//                                .requestMatchers("/api/categories/**").permitAll()
-//                                .requestMatchers("/api/manufacturers/**").permitAll()
-//                                .requestMatchers("/api/orders/**").permitAll()
-//                                .requestMatchers("/api/products/**").permitAll()
-//                                .requestMatchers("/api/shippings/**").permitAll()
                 ).addFilterBefore(jwtAuthenticationFilter(
                                 jwtTokenProvider,
                                 myClientService),
                         UsernamePasswordAuthenticationFilter.class)
-//                .sessionManagement(session -> session
-//                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                .formLogin(AbstractAuthenticationFilterConfigurer::permitAll
+                .formLogin(form -> form
+                        .loginPage("/login") // Страница входа
+                        .loginProcessingUrl("/perform_login") // URL для обработки формы входа
+                        .defaultSuccessUrl("/", true) // Перенаправление после успешного входа
+                        .failureUrl("/login?error=true") // Перенаправление при ошибке
+                        .permitAll()
+                )
+                .logout(logout -> logout
+                        .logoutUrl("/api/auth/logout")
+                        .logoutSuccessUrl("/login?logout=true")
+                        .permitAll()
+                )
+                .sessionManagement(session -> session
+                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 ).build();
     }
 

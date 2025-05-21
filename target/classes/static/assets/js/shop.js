@@ -1,7 +1,11 @@
+
+
 // Текущая страница
 let currentPage = 1;
 // Общее количество страниц (можно получить из заголовков или отдельным запросом)
 let totalPages = 1;
+
+import { addToCart } from './cart.js';
 
 let currentCategory =  parseInt(localStorage.getItem('preselectedCategory')) || "0";
 
@@ -17,23 +21,10 @@ function initCategoryLinks() {
     categoryLinks.forEach(link => {
         link.addEventListener('click', function(e) {
             e.preventDefault();
-
-            // // Удаляем активный класс у всех ссылок
-            // categoryLinks.forEach(l => l.classList.remove('active-category'));
-            // // Добавляем активный класс к выбранной ссылке
-            // this.classList.add('active-category');
-            //
-            // currentCategoryId = parseInt(this.dataset.categoryId);
-            // currentPage = 1;
-            //
-            // loadCategoryData(currentCategoryId);
-
             const categoryId = this.getAttribute('data-category-id');
             currentCategory = categoryId;
             localStorage.removeItem('preselectedCategory'); // Очищаем после использования
             currentPage = 1;
-
-            //updateActiveCategory(categoryId);
             loadCategoryData(categoryId);
         });
     });
@@ -87,33 +78,6 @@ function loadCategoryData(categoryId) {
             })
             .catch(handleError);
     }
-}
-
-function fetchProductsByCategory(currentCategoryId, page) {
-    const url = currentCategoryId === 0
-        ? `/api/products/${page}`
-        : `/api/products/category/${currentCategoryId}/page/${page}`;
-
-    fetch(url, {
-        method: 'GET',
-        headers: {
-            'Content-Type': 'application/json',
-        }
-    })
-    .then(response => {
-        if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
-        return response.json();
-    })
-    .then(data => {
-        if (data && data.length > 0) {
-            displayProducts(data);
-            updatePagination(currentPage);
-        } else {
-            document.getElementById('products-container').innerHTML =
-                '<div class="col-12"><p>Товары не найдены</p></div>';
-        }
-    })
-    .catch(handleError);
 }
 
 function handleError(error) {
@@ -173,40 +137,50 @@ function loadPage(page, categoryId = currentCategory) {
 }
 
  // Функция для отображения товаров
-    function displayProducts(products) {
+function displayProducts(products) {
     const container = document.getElementById('products-container');
     container.innerHTML = '';
 
     products.forEach(product => {
-
-    const productHtml = `
-        <div class="col-md-4">
-            <div class="card mb-4 product-wap rounded-0">
-                <div class="card rounded-0">
-                    <img class="card-img rounded-0 img-fluid" src="/assets/img/product_category_${String(formatCategoryId(product.categoryId))}.jpg">
-                    <div class="card-img-overlay rounded-0 product-overlay d-flex align-items-center justify-content-center">
-                        <ul class="list-unstyled">
-                            <li><a class="btn btn-success text-white" href="shop-single?id=${product.productId}"><i class="far fa-heart"></i></a></li>
-                            <li><a class="btn btn-success text-white mt-2" href="shop-single?id=${product.productId}"><i class="far fa-eye"></i></a></li>
-                            <li><a class="btn btn-success text-white mt-2" href="shop-single?id=${product.productId}"><i class="fas fa-cart-plus"></i></a></li>
+        const productHtml = `
+            <div class="col-md-4">
+                <div class="card mb-4 product-wap rounded-0">
+                    <div class="card rounded-0">
+                        <img class="card-img rounded-0 img-fluid" src="/assets/img/product_category_${String(formatCategoryId(product.categoryId))}.jpg">
+                        <div class="card-img-overlay rounded-0 product-overlay d-flex align-items-center justify-content-center">
+                            <ul class="list-unstyled">
+                                <li><a class="btn btn-success text-white" href="shop-single?id=${product.productId}"><i class="far fa-heart"></i></a></li>
+                                <li><a class="btn btn-success text-white mt-2" href="shop-single?id=${product.productId}"><i class="far fa-eye"></i></a></li>
+                                <li><button class="btn btn-success text-white mt-2 add-to-cart" data-product='${JSON.stringify(product)}'>
+                                    <i class="fas fa-cart-plus"></i>
+                                </button></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <a href="shop-single?id=${product.productId}" class="h3 text-decoration-none">${product.name || 'Название товара'}</a>
+                        <ul class="w-100 list-unstyled d-flex justify-content-between mb-0">
+                            <li class="pt-2">
+                                ${generateColorDots(product.colors || ['red', 'blue', 'black'])}
+                            </li>
                         </ul>
+                        <p class="text-center mb-0">₽${product.price || '0.00'}</p>
                     </div>
                 </div>
-                <div class="card-body">
-                    <a href="shop-single?id=${product.productId}" class="h3 text-decoration-none">${product.name || 'Название товара'}</a>
-                    <ul class="w-100 list-unstyled d-flex justify-content-between mb-0">
-                        <li class="pt-2">
-                            ${generateColorDots(product.colors || ['red', 'blue', 'black'])}
-                        </li>
-                    </ul>
-                    <p class="text-center mb-0">₽${product.price || '0.00'}</p>
-                </div>
             </div>
-        </div>
-`;
+        `;
 
-    container.innerHTML += productHtml;
-});
+        container.innerHTML += productHtml;
+    });
+
+    // Добавляем обработчики событий для кнопок "Добавить в корзину"
+    document.querySelectorAll('.add-to-cart').forEach(button => {
+        button.addEventListener('click', (e) => {
+            e.preventDefault();
+            const product = JSON.parse(button.dataset.product);
+            addToCart(product);
+        });
+    });
 }
 
     // Генерация цветных точек

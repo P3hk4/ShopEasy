@@ -8,7 +8,6 @@
         <version>3.4.2</version>
         <relativePath/>
     </parent>
-
     <artifactId>EASYSHOP</artifactId>
     <version>1.0.0</version>
     <name>EASYSHOP</name>

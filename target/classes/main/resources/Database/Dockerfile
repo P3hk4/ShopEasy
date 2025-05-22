@@ -1,0 +1,7 @@
+FROM postgres:latest
+
+ENV POSTGRES_DB=EasyShopDocker
+ENV POSTGRES_USER=postgres
+ENV POSTGRES_PASSWORD=pa33word
+
+EXPOSE 5432

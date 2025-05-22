@@ -1,0 +1,61 @@
+version: '3.8'
+
+services:
+  postgres:
+    build:
+      context: ./src/main/resources
+      dockerfile: Dockerfile
+    container_name: easyshop-db
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: pa33word
+      POSTGRES_DB: EasyShopDocker
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d EasyShopDocker"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  easyshop-backend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: easyshop-app
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      DB_URL: jdbc:postgresql://postgres:5432/EasyShopDocker
+      DB_USERNAME: postgres
+      DB_PASSWORD: pa33word
+
+      SPRING_JPA_HIBERNATE_DDL_AUTO: none
+      SPRING_JPA_SHOW_SQL: "true"
+      SPRING_JPA_PROPERTIES_HIBERNATE_DIALECT: org.hibernate.dialect.PostgreSQLDialect
+      SPRING_JPA_GENERATE_DDL: "false"
+
+      SPRING_FLYWAY_BASELINE_ON_MIGRATE: "true"
+      SPRING_FLYWAY_ENABLED: "true"
+      SPRING_FLYWAY_LOCATIONS: "classpath:Database"
+      SPRING_FLYWAY_SQL_MIGRATION_PREFIX: "V"
+      SPRING_FLYWAY_SQL_MIGRATION_SUFFIXES: ".sql"
+      SPRING_FLYWAY_URL: jdbc:postgresql://postgres:5432/EasyShopDocker
+      SPRING_FLYWAY_USER: postgres
+      SPRING_FLYWAY_PASSWORD: pa33word
+
+      JWT_SECRET: "c29tZXN1cGVyc2VjcmV0a2V5d2l0aG91dGRhc2hlcwc29tZXN1cGVyc2VjcmV0a2V5d2l0aG91dGRhc2hlcwc29tZXN1cGVyc2VjcmV0a2V5d2l0aG91dGRhc2hlcw"
+      JWT_EXPIRATION: "86400000"
+
+      SPRING_APPLICATION_NAME: "EASYSHOP"
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./target:/app/target
+    restart: unless-stopped
+
+volumes:
+  postgres_data:

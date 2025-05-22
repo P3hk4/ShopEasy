@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Start Script -->
+<script src="assets/js/jquery-1.11.0.min.js"></script>
+<script src="assets/js/jquery-migrate-1.2.1.min.js"></script>
+<script src="assets/js/bootstrap.bundle.min.js"></script>
+<script src="assets/js/templatemo.js"></script>
+<script type="module" src="assets/js/shop.js"></script>
+<script type="module" src="assets/js/cart.js"></script>
+<!-- End Script -->
+
+<head>
+    <title>Easy Shop </title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link rel="apple-touch-icon" href="assets/img/apple-icon.png">
+    <link rel="shortcut icon" type="image/x-icon" href="assets/img/favicon.ico">
+
+    <link rel="stylesheet" href="assets/css/bootstrap.min.css">
+    <link rel="stylesheet" href="assets/css/templatemo.css">
+    <link rel="stylesheet" href="assets/css/custom.css">
+
+    <!-- Load fonts style after rendering the layout styles -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;200;300;400;500;700;900&display=swap">
+    <link rel="stylesheet" href="assets/css/fontawesome.min.css">
+</head>
+
+<body>
+    <!-- Start Top Nav -->
+    <nav class="navbar navbar-expand-lg bg-dark navbar-light d-none d-lg-block" id="templatemo_nav_top">
+        <div class="container text-light">
+            <div class="w-100 d-flex justify-content-between">
+                <div>
+                    <i class="fa fa-envelope mx-2"></i>
+                    <a class="navbar-sm-brand text-light text-decoration-none" href="mailto:info@company.com">EasyShop@company.com</a>
+                    <i class="fa fa-phone mx-2"></i>
+                    <a class="navbar-sm-brand text-light text-decoration-none" href="tel:010-020-0340">010-020-0340</a>
+                </div>
+                <div>
+                    <a class="text-light" href="https://fb.com/templatemo" target="_blank" rel="sponsored"><i class="fab fa-facebook-f fa-sm fa-fw me-2"></i></a>
+                    <a class="text-light" href="https://www.instagram.com/" target="_blank"><i class="fab fa-instagram fa-sm fa-fw me-2"></i></a>
+                    <a class="text-light" href="https://twitter.com/" target="_blank"><i class="fab fa-twitter fa-sm fa-fw me-2"></i></a>
+                    <a class="text-light" href="https://www.linkedin.com/" target="_blank"><i class="fab fa-linkedin fa-sm fa-fw"></i></a>
+                </div>
+            </div>
+        </div>
+    </nav>
+    <!-- Close Top Nav -->
+
+
+    <!-- Header -->
+    <nav class="navbar navbar-expand-lg navbar-light shadow">
+        <div class="container d-flex justify-content-between align-items-center">
+
+            <a class="navbar-brand text-success logo h1 align-self-center" href="/">
+                Easy Shop
+            </a>
+
+            <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#templatemo_main_nav" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="align-self-center collapse navbar-collapse flex-fill  d-lg-flex justify-content-lg-between" id="templatemo_main_nav">
+                <div class="flex-fill">
+                    <ul class="nav navbar-nav d-flex justify-content-between mx-lg-auto">
+                        <li class="nav-item">
+                            <a class="nav-link" href="/">Главная</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/shop">Магазин</a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="navbar align-self-center d-flex">
+                    <div class="d-lg-none flex-sm-fill mt-3 mb-4 col-7 col-sm-auto pr-3">
+                        <div class="input-group">
+                            <input type="text" class="form-control" id="inputMobileSearch" placeholder="Search ...">
+                            <div class="input-group-text">
+                                <i class="fa fa-fw fa-search"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <a class="nav-icon position-relative text-decoration-none" href="/basket">
+                        <i class="fa fa-fw fa-cart-arrow-down text-dark mr-1"></i>
+                        <span class="position-absolute top-0 left-100 translate-middle badge rounded-pill bg-light text-dark cart-count" style="display: none;">0</span>
+                    </a>
+                    <a class="nav-icon position-relative text-decoration-none" href="/account">
+                        <i class="fa fa-fw fa-user text-dark mr-3"></i>
+                    </a>
+                </div>
+            </div>
+
+        </div>
+    </nav>
+    <!-- Close Header -->
+
+    <!-- Start Content -->
+    <div class="container py-5">
+        <div class="row">
+
+            <div class="col-lg-3">
+                <h1 class="h2 pb-4">Категории</h1>
+                <div class="templatemo-accordion" style="height: 70vh; overflow-y: auto;">
+                    <div class="pb-3">
+                        <a class="collapsed d-flex justify-content-between h3 text-decoration-none"
+                           data-toggle="collapse"
+                           href="#collapseCategories"
+                           aria-expanded="false"
+                           aria-controls="collapseCategories">
+                            Категории
+                            <i class="pull-right fa fa-fw fa-chevron-circle-down mt-1 toggle-icon"></i>
+                        </a>
+                        <ul id="collapseCategories" class="collapse show list-unstyled pl-3">
+                            <li><a class="text-decoration-none active-category" href="#" data-category-id="0">Все товары</a></li>
+                            <li><a class="text-decoration-none" href="#" data-category-id="1">Аксессуар</a></li>
+                            <li><a class="text-decoration-none" href="#" data-category-id="2">Анорак</a></li>
+                            <li><a class="text-decoration-none" href="#" data-category-id="3">Балаклава</a></li>
+                            <li><a class="text-decoration-none" href="#" data-category-id="4">Балетки</a></li>
+                            <li><a class="text-decoration-none" href="#" data-category-id="5">Бандана</a></li>
+                            <li><a class="text-decoration-none" href="#" data-category-id="6">Бахилы</a></li>
+                            <li><a class="text-decoration-none" href="#" data-category-id="7">Берет</a></li>
+                            <li><a class="text-decoration-none" href="#" data-category-id="8">Блузка</a></li>
+                            <li><a class="text-decoration-none" href="#" data-category-id="9">Боди</a></li>
+                            <li><a class="text-decoration-none" href="#" data-category-id="10">Бомбер</a></li>
+                            <li><a class="text-decoration-none" href="#" data-category-id="11">Бордшорты</a></li>
+                            <li><a class="text-decoration-none" href="#" data-category-id="12">Ботинки</a></li>
+                            <li><a class="text-decoration-none" href="#" data-category-id="13">Брюки</a></li>
+                            <li><a class="text-decoration-none" href="#" data-category-id="14">Бюстгальтер</a></li>
+                            <li><a class="text-decoration-none" href="#" data-category-id="15">Варежки</a></li>
+                            <li><a class="text-decoration-none" href="#" data-category-id="16">Велосипедки</a></li>
+                            <li><a class="text-decoration-none" href="#" data-category-id="17">Ветровка</a></li>
+                            <li><a class="text-decoration-none" href="#" data-category-id="18">Водолазка</a></li>
+                            <li><a class="text-decoration-none" href="#" data-category-id="19">Высокие кеды</a></li>
+                            <li><a class="text-decoration-none" href="#" data-category-id="20">Гейтор</a></li>
+                            <li><a class="text-decoration-none" href="#" data-category-id="21">Гетры</a></li>
+                            <li><a class="text-decoration-none" href="#" data-category-id="22">Джемпер</a></li>
+                            <li><a class="text-decoration-none" href="#" data-category-id="23">Джинсовая куртка</a></li>
+                            <li><a class="text-decoration-none" href="#" data-category-id="24">Джинсовая юбка</a></li>
+                            <li><a class="text-decoration-none" href="#" data-category-id="25">Джинсовые шорты</a></li>
+                            <li><a class="text-decoration-none" href="#" data-category-id="26">Джинсы</a></li>
+                            <li><a class="text-decoration-none" href="#" data-category-id="27">Дождевик</a></li>
+                            <li><a class="text-decoration-none" href="#" data-category-id="28">Жилет</a></li>
+                            <li><a class="text-decoration-none" href="#" data-category-id="29">Жилет пуховый</a></li>
+                            <li><a class="text-decoration-none" href="#" data-category-id="30">Кардиган</a></li>
+                            <li><a class="text-decoration-none" href="#" data-category-id="31">Кепка</a></li>
+                            <li><a class="text-decoration-none" href="#" data-category-id="32">Кимоно</a></li>
+                            <li><a class="text-decoration-none" href="#" data-category-id="33">Колготки</a></li>
+                            <li><a class="text-decoration-none" href="#" data-category-id="34">Комбинезон</a></li>
+                            <li><a class="text-decoration-none" href="#" data-category-id="35">Комбинезон городской</a></li>
+                            <li><a class="text-decoration-none" href="#" data-category-id="36">Комплект</a></li>
+                            <li><a class="text-decoration-none" href="#" data-category-id="37">Комплект термобелья</a></li>
+                            <li><a class="text-decoration-none" href="#" data-category-id="38">Косынка</a></li>
+                            <li><a class="text-decoration-none" href="#" data-category-id="39">Кроссовки</a></li>
+                            <li><a class="text-decoration-none" href="#" data-category-id="40">Купальник верх</a></li>
+                            <li><a class="text-decoration-none" href="#" data-category-id="41">Купальник комплект</a></li>
+                            <li><a class="text-decoration-none" href="#" data-category-id="42">Купальник низ</a></li>
+                            <li><a class="text-decoration-none" href="#" data-category-id="43">Куртка</a></li>
+                            <li><a class="text-decoration-none" href="#" data-category-id="44">Куртка городская</a></li>
+                            <li><a class="text-decoration-none" href="#" data-category-id="45">Куртка пуховая</a></li>
+                            <li><a class="text-decoration-none" href="#" data-category-id="46">Куртка-рубашка</a></li>
+                            <li><a class="text-decoration-none" href="#" data-category-id="47">Леггинсы</a></li>
+                            <li><a class="text-decoration-none" href="#" data-category-id="48">Лоферы</a></li>
+                            <li><a class="text-decoration-none" href="#" data-category-id="49">Лонгслив</a></li>
+                            <li><a class="text-decoration-none" href="#" data-category-id="50">Майка</a></li>
+                            <li><a class="text-decoration-none" href="#" data-category-id="51">Маска</a></li>
+                            <li><a class="text-decoration-none" href="#" data-category-id="52">Мокасины</a></li>
+                            <li><a class="text-decoration-none" href="#" data-category-id="53">Мюли</a></li>
+                            <li><a class="text-decoration-none" href="#" data-category-id="54">Нагрудник</a></li>
+                            <li><a class="text-decoration-none" href="#" data-category-id="55">Наушники</a></li>
+                            <li><a class="text-decoration-none" href="#" data-category-id="56">Низкие кеды</a></li>
+                            <li><a class="text-decoration-none" href="#" data-category-id="57">Носки</a></li>
+                            <li><a class="text-decoration-none" href="#" data-category-id="58">Пальто</a></li>
+                            <li><a class="text-decoration-none" href="#" data-category-id="59">Пальто пуховое</a></li>
+                            <li><a class="text-decoration-none" href="#" data-category-id="60">Панама</a></li>
+                            <li><a class="text-decoration-none" href="#" data-category-id="61">Парка</a></li>
+                            <li><a class="text-decoration-none" href="#" data-category-id="62">Парка пуховая</a></li>
+                            <li><a class="text-decoration-none" href="#" data-category-id="63">Перчатки</a></li>
+                            <li><a class="text-decoration-none" href="#" data-category-id="64">Пиджак</a></li>
+                            <li><a class="text-decoration-none" href="#" data-category-id="65">Пижама</a></li>
+                            <li><a class="text-decoration-none" href="#" data-category-id="66">Плавки</a></li>
+                            <li><a class="text-decoration-none" href="#" data-category-id="67">Платок</a></li>
+                            <li><a class="text-decoration-none" href="#" data-category-id="68">Платье</a></li>
+                            <li><a class="text-decoration-none" href="#" data-category-id="69">Плащ</a></li>
+                            <li><a class="text-decoration-none" href="#" data-category-id="70">Повязка на голову</a></li>
+                            <li><a class="text-decoration-none" href="#" data-category-id="71">Подшлемник</a></li>
+                            <li><a class="text-decoration-none" href="#" data-category-id="72">Полуботинки</a></li>
+                            <li><a class="text-decoration-none" href="#" data-category-id="73">Полусапоги</a></li>
+                            <li><a class="text-decoration-none" href="#" data-category-id="74">Поло</a></li>
+                            <li><a class="text-decoration-none" href="#" data-category-id="75">Полукомбинезон</a></li>
+                            <li><a class="text-decoration-none" href="#" data-category-id="76">Пончо</a></li>
+                            <li><a class="text-decoration-none" href="#" data-category-id="77">Пояс</a></li>
+                            <li><a class="text-decoration-none" href="#" data-category-id="78">Пуховик</a></li>
+                            <li><a class="text-decoration-none" href="#" data-category-id="79">Пуховые штаны</a></li>
+                            <li><a class="text-decoration-none" href="#" data-category-id="80">Пуховый жилет</a></li>
+                            <li><a class="text-decoration-none" href="#" data-category-id="81">Резиновые сапоги</a></li>
+                            <li><a class="text-decoration-none" href="#" data-category-id="82">Ремень</a></li>
+                            <li><a class="text-decoration-none" href="#" data-category-id="83">Рубашка</a></li>
+                            <li><a class="text-decoration-none" href="#" data-category-id="84">Рукава</a></li>
+                            <li><a class="text-decoration-none" href="#" data-category-id="85">Сабо</a></li>
+                            <li><a class="text-decoration-none" href="#" data-category-id="86">Сандалии</a></li>
+                            <li><a class="text-decoration-none" href="#" data-category-id="87">Сапоги</a></li>
+                            <li><a class="text-decoration-none" href="#" data-category-id="88">Свитер</a></li>
+                            <li><a class="text-decoration-none" href="#" data-category-id="89">Слипоны</a></li>
+                            <li><a class="text-decoration-none" href="#" data-category-id="90">Спортивные брюки</a></li>
+                            <li><a class="text-decoration-none" href="#" data-category-id="91">Тапочки</a></li>
+                            <li><a class="text-decoration-none" href="#" data-category-id="92">Термокомбинезон</a></li>
+                            <li><a class="text-decoration-none" href="#" data-category-id="93">Термокофта</a></li>
+                            <li><a class="text-decoration-none" href="#" data-category-id="94">Термоноски</a></li>
+                            <li><a class="text-decoration-none" href="#" data-category-id="95">Термофутболка</a></li>
+                            <li><a class="text-decoration-none" href="#" data-category-id="96">Термоштаны</a></li>
+                            <li><a class="text-decoration-none" href="#" data-category-id="97">Толстовка</a></li>
+                            <li><a class="text-decoration-none" href="#" data-category-id="98">Топ</a></li>
+                            <li><a class="text-decoration-none" href="#" data-category-id="99">Трусы</a></li>
+                            <li><a class="text-decoration-none" href="#" data-category-id="100">Туфли</a></li>
+                            <li><a class="text-decoration-none" href="#" data-category-id="101">Футболка</a></li>
+                            <li><a class="text-decoration-none" href="#" data-category-id="102">Шапка</a></li>
+                            <li><a class="text-decoration-none" href="#" data-category-id="103">Шарф</a></li>
+                            <li><a class="text-decoration-none" href="#" data-category-id="104">Шляпа</a></li>
+                            <li><a class="text-decoration-none" href="#" data-category-id="105">Шлепанцы</a></li>
+                            <li><a class="text-decoration-none" href="#" data-category-id="106">Шнурки</a></li>
+                            <li><a class="text-decoration-none" href="#" data-category-id="107">Шорты</a></li>
+                            <li><a class="text-decoration-none" href="#" data-category-id="108">Штаны</a></li>
+                            <li><a class="text-decoration-none" href="#" data-category-id="109">Штаны спортивные</a></li>
+                            <li><a class="text-decoration-none" href="#" data-category-id="110">Шуба</a></li>
+                            <li><a class="text-decoration-none" href="#" data-category-id="111">Юбка</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-9">
+                <div class="row">
+                    <div class="col-md-6">
+                        <ul class="list-inline shop-top-menu pb-3 pt-1">
+                            <li class="list-inline-item">
+                                <a class="h3 text-dark text-decoration-none mr-3" href="#"></a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="col-md-6 pb-4">
+
+                    </div>
+                </div>
+                <div class="row" id="products-container">
+
+                </div>
+                <div div="row">
+                    <ul class="pagination pagination-lg justify-content-end" id="pagination">
+                    </ul>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <!-- End Content -->
+
+    <!-- Start Brands -->
+    <section class="bg-light py-5">
+        <div class="container my-4">
+            <div class="row text-center py-3">
+                <div class="col-lg-6 m-auto">
+                    <h1 class="h1">Наши бренды</h1>
+                </div>
+                <div class="col-lg-9 m-auto tempaltemo-carousel">
+                    <div class="row d-flex flex-row">
+                        <!--Controls-->
+                        <div class="col-1 align-self-center">
+                            <a class="h1" href="#multi-item-example" role="button" data-bs-slide="prev">
+                                <i class="text-light fas fa-chevron-left"></i>
+                            </a>
+                        </div>
+                        <!--End Controls-->
+
+                        <!--Carousel Wrapper-->
+                        <div class="col">
+                            <div class="carousel slide carousel-multi-item pt-2 pt-md-0" id="multi-item-example" data-bs-ride="carousel">
+                                <!--Slides-->
+                                <div class="carousel-inner product-links-wap" role="listbox">
+
+                                    <!--First slide-->
+                                    <div class="carousel-item active">
+                                        <div class="row">
+                                            <div class="col-3 p-md-5">
+                                                <a href="#"><img class="img-fluid brand-img" src="assets/img/brand_01.png" alt="Brand Logo"></a>
+                                            </div>
+                                            <div class="col-3 p-md-5">
+                                                <a href="#"><img class="img-fluid brand-img" src="assets/img/brand_02.png" alt="Brand Logo"></a>
+                                            </div>
+                                            <div class="col-3 p-md-5">
+                                                <a href="#"><img class="img-fluid brand-img" src="assets/img/brand_03.png" alt="Brand Logo"></a>
+                                            </div>
+                                            <div class="col-3 p-md-5">
+                                                <a href="#"><img class="img-fluid brand-img" src="assets/img/brand_04.png" alt="Brand Logo"></a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!--End First slide-->
+
+                                    <!--Second slide-->
+                                    <div class="carousel-item">
+                                        <div class="row">
+                                            <div class="col-3 p-md-5">
+                                                <a href="#"><img class="img-fluid brand-img" src="assets/img/brand_01.png" alt="Brand Logo"></a>
+                                            </div>
+                                            <div class="col-3 p-md-5">
+                                                <a href="#"><img class="img-fluid brand-img" src="assets/img/brand_02.png" alt="Brand Logo"></a>
+                                            </div>
+                                            <div class="col-3 p-md-5">
+                                                <a href="#"><img class="img-fluid brand-img" src="assets/img/brand_03.png" alt="Brand Logo"></a>
+                                            </div>
+                                            <div class="col-3 p-md-5">
+                                                <a href="#"><img class="img-fluid brand-img" src="assets/img/brand_04.png" alt="Brand Logo"></a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!--End Second slide-->
+
+                                    <!--Third slide-->
+                                    <div class="carousel-item">
+                                        <div class="row">
+                                            <div class="col-3 p-md-5">
+                                                <a href="#"><img class="img-fluid brand-img" src="assets/img/brand_01.png" alt="Brand Logo"></a>
+                                            </div>
+                                            <div class="col-3 p-md-5">
+                                                <a href="#"><img class="img-fluid brand-img" src="assets/img/brand_02.png" alt="Brand Logo"></a>
+                                            </div>
+                                            <div class="col-3 p-md-5">
+                                                <a href="#"><img class="img-fluid brand-img" src="assets/img/brand_03.png" alt="Brand Logo"></a>
+                                            </div>
+                                            <div class="col-3 p-md-5">
+                                                <a href="#"><img class="img-fluid brand-img" src="assets/img/brand_04.png" alt="Brand Logo"></a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!--End Third slide-->
+
+                                </div>
+                                <!--End Slides-->
+                            </div>
+                        </div>
+                        <!--End Carousel Wrapper-->
+
+                        <!--Controls-->
+                        <div class="col-1 align-self-center">
+                            <a class="h1" href="#multi-item-example" role="button" data-bs-slide="next">
+                                <i class="text-light fas fa-chevron-right"></i>
+                            </a>
+                        </div>
+                        <!--End Controls-->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!--End Brands-->
+
+
+    <!-- Start Footer -->
+    <footer class="bg-dark" id="tempaltemo_footer">
+        <div class="container">
+            <div class="row">
+
+                <div class="col-md-4 pt-5">
+                    <h2 class="h2 text-success border-bottom pb-3 border-light logo">Zay Shop</h2>
+                    <ul class="list-unstyled text-light footer-link-list">
+                        <li>
+                            <i class="fas fa-map-marker-alt fa-fw"></i>
+                            Россия Самарская область Самара
+                        </li>
+                        <li>
+                            <i class="fa fa-phone fa-fw"></i>
+                            <a class="text-decoration-none" href="tel:010-020-0340">010-020-0340</a>
+                        </li>
+                        <li>
+                            <i class="fa fa-envelope fa-fw"></i>
+                            <a class="text-decoration-none" href="mailto:info@company.com">info@company.com</a>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="col-md-4 pt-5">
+                </div>
+
+                <div class="col-md-4 pt-5">
+                    <h2 class="h2 text-light border-bottom pb-3 border-light">Прочее</h2>
+                    <ul class="list-unstyled text-light footer-link-list">
+                        <li><a class="text-decoration-none" href="/">Домой</a></li>
+                    </ul>
+                </div>
+
+            </div>
+
+            <div class="row text-light mb-4">
+                <div class="col-12 mb-3">
+                    <div class="w-100 my-3 border-top border-light"></div>
+                </div>
+                <div class="col-auto me-auto">
+                    <ul class="list-inline text-left footer-icons">
+                        <li class="list-inline-item border border-light rounded-circle text-center">
+                            <a class="text-light text-decoration-none" target="_blank" href="http://facebook.com/"><i class="fab fa-facebook-f fa-lg fa-fw"></i></a>
+                        </li>
+                        <li class="list-inline-item border border-light rounded-circle text-center">
+                            <a class="text-light text-decoration-none" target="_blank" href="https://www.instagram.com/"><i class="fab fa-instagram fa-lg fa-fw"></i></a>
+                        </li>
+                        <li class="list-inline-item border border-light rounded-circle text-center">
+                            <a class="text-light text-decoration-none" target="_blank" href="https://twitter.com/"><i class="fab fa-twitter fa-lg fa-fw"></i></a>
+                        </li>
+                        <li class="list-inline-item border border-light rounded-circle text-center">
+                            <a class="text-light text-decoration-none" target="_blank" href="https://www.linkedin.com/"><i class="fab fa-linkedin fa-lg fa-fw"></i></a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="col-auto">
+                </div>
+            </div>
+        </div>
+        </div>
+
+        <div class="w-100 bg-black py-3">
+            <div class="container">
+                <div class="row pt-2">
+                    <div class="col-12">
+                        <p class="text-left text-light">
+                            Copyright &copy; 2025 EasyShop
+                            | Designed by <a rel="sponsored" href="https://templatemo.com" target="_blank">TemplateMo</a>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </footer>
+    <!-- End Footer -->
+
+</body>
+
+</html>

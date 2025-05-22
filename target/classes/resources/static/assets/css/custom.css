@@ -1,0 +1,26 @@
+.cart-table {
+    font-size: 0.95rem;
+}
+
+.cart-table th {
+    background-color: #f8f9fa;
+    font-weight: 500;
+}
+
+.quantity-display {
+    min-width: 30px;
+    text-align: center;
+    display: inline-block;
+}
+
+.btn-minus, .btn-plus {
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.cart-item:hover {
+    background-color: rgba(0, 0, 0, 0.02);
+}

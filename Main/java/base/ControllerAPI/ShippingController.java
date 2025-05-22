@@ -43,6 +43,41 @@ public class ShippingController {
                 : new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
+    @PutMapping("/my")
+    @PreAuthorize("isAuthenticated()")
+    public ResponseEntity<String> saveMyShipping(@RequestBody Shipping shipping){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        MyClientDetails myClientDetails = null;
+        if (authentication instanceof UsernamePasswordAuthenticationToken) {
+            myClientDetails = (MyClientDetails) authentication.getPrincipal();
+        }
+        shipping.setClientId(myClientDetails.getClient().getClientId());
+        try {
+            shippingService.saveShipping(shipping);
+            return ResponseEntity.status(HttpStatus.CREATED).body("Адрес доставки успешно сохранён!");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Ошибка при сохранении адреса доставки: " + e.getMessage());
+        }
+    }
+
+    @DeleteMapping("/my/{shippingId}")
+    @PreAuthorize("isAuthenticated()")
+    public ResponseEntity<String> deleteMyShipping(@PathVariable int shippingId) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        MyClientDetails myClientDetails = null;
+        if (authentication instanceof UsernamePasswordAuthenticationToken) {
+            myClientDetails = (MyClientDetails) authentication.getPrincipal();
+        }
+
+        try {
+            shippingService.deleteShippingById(shippingId);
+            return ResponseEntity.ok("Адрес доставки успешно удалён");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Ошибка при удалении адреса доставки: " + e.getMessage());
+        }
+    }
+
     @GetMapping
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<List<ShippingDTO>> getAllShippings() {
@@ -95,9 +130,9 @@ public class ShippingController {
     public ResponseEntity<String> delete(@PathVariable(name = "id") int id) {
         try {
             shippingService.deleteShippingById(id);
-            return ResponseEntity.status(HttpStatus.NO_CONTENT).body("Адрес доставки успено удалена");
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).body("Адрес доставки успешно удален");
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Ошибка при удалении адреса: " + e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Ошибка при удалении адреса доставки: " + e.getMessage());
         }
     }
 }

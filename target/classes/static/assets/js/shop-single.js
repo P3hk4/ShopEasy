@@ -1,5 +1,3 @@
-import { addToCart } from './cart.js';
-
 document.addEventListener('DOMContentLoaded', function() {
     // Функция для получения параметра из URL
     function getUrlParameter(name) {
@@ -31,9 +29,6 @@ document.addEventListener('DOMContentLoaded', function() {
         .then(product => {
             // Заполняем данные на странице
             updateProductDetails(product);
-
-            // Добавляем обработчики для кнопок после загрузки данных товара
-            setupCartButtons(product);
         })
         .catch(error => {
             console.error('Ошибка при загрузке товара:', error);
@@ -112,6 +107,13 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
+    // Генерация цветных точек
+    function generateColorDots(colors) {
+        return colors.map(color =>
+            `<span class="product-color-dot color-dot-${color} float-left rounded-circle ml-1"></span>`
+        ).join('');
+    }
+
     // Показать сообщение об ошибке
     function showErrorMessage(message) {
         const productDetailSection = document.querySelector('.card-body');
@@ -122,27 +124,6 @@ document.addEventListener('DOMContentLoaded', function() {
                     <a href="/shop" class="alert-link">Вернуться в магазин</a>
                 </div>
             `;
-        }
-    }
-
-    function setupCartButtons(product) {
-        // Кнопка "Add To Cart"
-        const addToCartBtn = document.querySelector('button[name="submit"][value="addtocard"]');
-        if (addToCartBtn) {
-            addToCartBtn.addEventListener('click', function(e) {
-                e.preventDefault();
-                addToCart(product);
-            });
-        }
-
-        // Кнопка "Buy"
-        const buyBtn = document.querySelector('button[name="submit"][value="buy"]');
-        if (buyBtn) {
-            buyBtn.addEventListener('click', function(e) {
-                e.preventDefault();
-                addToCart(product);
-                window.location.href = '/basket'; // Перенаправляем на страницу корзины
-            });
         }
     }
 });

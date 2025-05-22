@@ -32,15 +32,9 @@
     <div class="w-100 d-flex justify-content-between">
       <div>
         <i class="fa fa-envelope mx-2"></i>
-        <a class="navbar-sm-brand text-light text-decoration-none" href="mailto:info@company.com">info@company.com</a>
+        <a class="navbar-sm-brand text-light text-decoration-none" href="mailto:EasyShop@company.com">EasyShop@company.com</a>
         <i class="fa fa-phone mx-2"></i>
         <a class="navbar-sm-brand text-light text-decoration-none" href="tel:010-020-0340">010-020-0340</a>
-      </div>
-      <div>
-        <a class="text-light" href="https://fb.com/templatemo" target="_blank" rel="sponsored"><i class="fab fa-facebook-f fa-sm fa-fw me-2"></i></a>
-        <a class="text-light" href="https://www.instagram.com/" target="_blank"><i class="fab fa-instagram fa-sm fa-fw me-2"></i></a>
-        <a class="text-light" href="https://twitter.com/" target="_blank"><i class="fab fa-twitter fa-sm fa-fw me-2"></i></a>
-        <a class="text-light" href="https://www.linkedin.com/" target="_blank"><i class="fab fa-linkedin fa-sm fa-fw"></i></a>
       </div>
     </div>
   </div>
@@ -51,7 +45,7 @@
 <nav class="navbar navbar-expand-lg navbar-light shadow">
   <div class="container d-flex justify-content-between align-items-center">
 
-    <a class="navbar-brand text-success logo h1 align-self-center" href="index">
+    <a class="navbar-brand text-success logo h1 align-self-center" href="/">
       Easy Shop
     </a>
 
@@ -68,9 +62,6 @@
           <li class="nav-item">
             <a class="nav-link" href="/shop">Магазин</a>
           </li>
-          <li class="nav-item">
-            <a class="nav-link" href="/contact">Контакты</a>
-          </li>
         </ul>
       </div>
       <div class="navbar align-self-center d-flex">
@@ -82,14 +73,11 @@
             </div>
           </div>
         </div>
-        <a class="nav-icon d-none d-lg-inline" href="#" data-bs-toggle="modal" data-bs-target="#templatemo_search">
-          <i class="fa fa-fw fa-search text-dark mr-2"></i>
-        </a>
         <a class="nav-icon position-relative text-decoration-none" href="/basket">
           <i class="fa fa-fw fa-cart-arrow-down text-dark mr-1"></i>
           <span class="position-absolute top-0 left-100 translate-middle badge rounded-pill bg-light text-dark cart-count" style="display: none;">0</span>
         </a>
-        <a class="nav-icon position-relative text-decoration-none" href="loginafter">
+        <a class="nav-icon position-relative text-decoration-none" href="/account">
           <i class="fa fa-fw fa-user text-dark mr-3"></i>
         </a>
       </div>
@@ -98,23 +86,6 @@
   </div>
 </nav>
 <!-- Close Header -->
-
-<!-- Modal -->
-<div class="modal fade bg-white" id="templatemo_search" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-lg" role="document">
-    <div class="w-100 pt-1 mb-5 text-right">
-      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-    </div>
-    <form action="" method="get" class="modal-content modal-body border-0 p-0">
-      <div class="input-group mb-2">
-        <input type="text" class="form-control" id="inputModalSearch" name="q" placeholder="Search ...">
-        <button type="submit" class="input-group-text bg-success text-light">
-          <i class="fa fa-fw fa-search text-white"></i>
-        </button>
-      </div>
-    </form>
-  </div>
-</div>
 
 <!-- Start Content -->
 <div class="container py-5">
@@ -170,7 +141,6 @@
         </div>
       </div>
     </div>
-
     <!-- Блок с итоговой ценой (занимает 4 колонки) -->
     <div class="col-lg-4">
       <div class="card border-0 rounded-0 p-lg-4 bg-light">
@@ -191,14 +161,26 @@
               <strong class="text-uppercase small">Всего</strong>
               <span class="cart-total">0 ₽</span>
             </li>
+            <li class="mb-3">
+              <strong class="text-uppercase small d-block mb-2">Адрес доставки</strong>
+              <select class="form-select shipping-address-select" required>
+                <option value="" selected disabled>Выберите адрес доставки</option>
+                <!-- Сюда будут загружаться адреса -->
+              </select>
+              <button type="button" class="btn btn-link p-0 mt-2 small" data-bs-toggle="modal" data-bs-target="#addShippingModal">
+                <i class="fas fa-plus me-1"></i> Добавить новый адрес
+              </button>
+            </li>
+            <!-- ... остальные элементы ... -->
             <li>
-              <a href="checkout" class="btn btn-success form-control">Оформить заказ</a>
+              <button class="btn btn-success form-control checkout-btn">Оформить заказ</button>
             </li>
           </ul>
         </div>
       </div>
     </div>
   </div>
+
 </div>
 <!-- End Content -->
 
@@ -207,11 +189,7 @@
   <div class="container my-4">
     <div class="row text-center py-3">
       <div class="col-lg-6 m-auto">
-        <h1 class="h1">Our Brands</h1>
-        <p>
-          Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-          Lorem ipsum dolor sit amet.
-        </p>
+        <h1 class="h1">Наши бренды</h1>
       </div>
       <div class="col-lg-9 m-auto tempaltemo-carousel">
         <div class="row d-flex flex-row">
@@ -336,7 +314,6 @@
         <h2 class="h2 text-light border-bottom pb-3 border-light">Прочее</h2>
         <ul class="list-unstyled text-light footer-link-list">
           <li><a class="text-decoration-none" href="/">Домой</a></li>
-          <li><a class="text-decoration-none" href="/contact">Связаться с нами</a></li>
         </ul>
       </div>
 
@@ -363,13 +340,9 @@
         </ul>
       </div>
       <div class="col-auto">
-        <label class="sr-only" for="subscribeEmail">Email address</label>
-        <div class="input-group mb-2">
-          <input type="text" class="form-control bg-dark border-light" id="subscribeEmail" placeholder="Email address">
-          <div class="input-group-text btn-success text-light">Subscribe</div>
-        </div>
       </div>
     </div>
+  </div>
   </div>
 
   <div class="w-100 bg-black py-3">
@@ -387,6 +360,37 @@
 
 </footer>
 <!-- End Footer -->
+
+<div class="modal fade" id="addShippingModal" tabindex="-1" aria-labelledby="addShippingModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="addShippingModalLabel">Добавить адрес доставки</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form id="shippingForm">
+          <div class="mb-3">
+            <label for="postCode" class="form-label">Почтовый индекс</label>
+            <input type="text" class="form-control" id="postCode" required>
+          </div>
+          <div class="mb-3">
+            <label for="city" class="form-label">Город</label>
+            <input type="text" class="form-control" id="city" required>
+          </div>
+          <div class="mb-3">
+            <label for="address" class="form-label">Адрес</label>
+            <input type="text" class="form-control" id="address" required>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Отмена</button>
+        <button type="button" class="btn btn-success" id="saveShippingBtn">Сохранить адрес</button>
+      </div>
+    </div>
+  </div>
+</div>
 
 <script type="module" src="assets/js/cart.js"></script>
 </body>

@@ -4,6 +4,9 @@ class Cart {
         this.updateCartCount();
         this.renderCart();
         this.setupClearButton(); // Добавляем обработчик очистки
+        this.loadShippingAddresses(); // Загружаем адреса при инициализации
+        this.setupShippingModal(); // Настраиваем обработчики модального окна
+        this.setupCheckoutButton();
     }
     // Добавляем метод updateCartCount
     updateCartCount() {
@@ -230,6 +233,203 @@ class Cart {
             el.textContent = totalItems;
             el.style.display = totalItems > 0 ? 'inline-block' : 'none';
         });
+    }
+
+    async loadShippingAddresses() {
+        const token = localStorage.getItem('accessToken');
+
+        try {
+            const response = await fetch('/api/shippings/my', {
+                method: 'GET',
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'application/json'
+                }
+            });
+
+            if (response.ok) {
+                const addresses = await response.json();
+                this.renderShippingAddresses(addresses);
+            } else if (response.status === 401) {
+                console.log('Пользователь не авторизован');
+            } else {
+                console.error('Ошибка загрузки адресов:', response.status);
+            }
+        } catch (error) {
+            console.error('Не удалось загрузить адреса:', error);
+        }
+    }
+
+    renderShippingAddresses(addresses) {
+        const select = document.querySelector('.shipping-address-select');
+        if (!select) return;
+
+        // Очищаем существующие варианты, кроме первого
+        select.innerHTML = '<option value="" selected disabled>Выберите адрес доставки</option>';
+
+        if (addresses && addresses.length > 0) {
+            addresses.forEach(address => {
+                const option = document.createElement('option');
+                option.value = address.shippingId;
+                option.textContent = `${address.city}, ${address.address} (${address.postCode})`;
+                select.appendChild(option);
+            });
+
+            // Добавляем кнопку для нового адреса
+            const addNewOption = document.createElement('option');
+            addNewOption.value = 'new';
+            addNewOption.textContent = 'Добавить новый адрес...';
+            select.appendChild(addNewOption);
+
+            select.addEventListener('change', (e) => {
+                if (e.target.value === 'new') {
+                    // Показываем модальное окно для добавления нового адреса
+                    const modal = new bootstrap.Modal(document.getElementById('addShippingModal'));
+                    modal.show();
+                    // Сбрасываем выбор
+                    select.value = '';
+                }
+            });
+        } else {
+            // Сообщение, если адресов нет
+            const option = document.createElement('option');
+            option.value = 'new';
+            option.textContent = 'Добавить адрес доставки...';
+            select.appendChild(option);
+
+            select.addEventListener('change', (e) => {
+                if (e.target.value === 'new') {
+                    // Показываем модальное окно для добавления нового адреса
+                    const modal = new bootstrap.Modal(document.getElementById('addShippingModal'));
+                    modal.show();
+                    // Сбрасываем выбор
+                    select.value = '';
+                }
+            });
+        }
+    }
+
+    setupShippingModal() {
+        const saveBtn = document.getElementById('saveShippingBtn');
+        if (saveBtn) {
+            saveBtn.addEventListener('click', async () => {
+                const postCode = document.getElementById('postCode').value;
+                const city = document.getElementById('city').value;
+                const address = document.getElementById('address').value;
+
+                if (!postCode || !city || !address) {
+                    alert('Заполните все поля');
+                    return;
+                }
+
+                const token = localStorage.getItem('accessToken');
+                if (!token) {
+                    alert('Для сохранения адреса необходимо авторизоваться');
+                    window.location.href = '/login';
+                    return;
+                }
+
+                try {
+                    const response = await fetch('/api/shippings/my', {
+                        method: 'PUT',
+                        headers: {
+                            'Authorization': `Bearer ${token}`,
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            postCode,
+                            city,
+                            address
+                        })
+                    });
+
+                    if (response.ok) {
+                        const result = await response.text();
+                        alert(result);
+                        // Закрываем модальное окно и обновляем список
+                        bootstrap.Modal.getInstance(document.getElementById('addShippingModal')).hide();
+                        this.loadShippingAddresses();
+                        // Очищаем форму
+                        document.getElementById('shippingForm').reset();
+                    } else {
+                        const error = await response.text();
+                        alert(error);
+                    }
+                } catch (error) {
+                    console.error('Ошибка сохранения адреса:', error);
+                    alert('Ошибка при сохранении адреса');
+                }
+            });
+        }
+    }
+
+    async checkout() {
+        const token = localStorage.getItem('accessToken');
+
+        if (!token) {
+            alert('Для оформления заказа необходимо авторизоваться');
+            window.location.href = '/login';
+            return;
+        }
+
+        const shippingSelect = document.querySelector('.shipping-address-select');
+        const shippingId = shippingSelect.value;
+
+        if (!shippingId) {
+            alert('Выберите адрес доставки');
+            return;
+        }
+
+        // Подготавливаем данные для заказа
+        const orderData = {
+            shippingId: parseInt(shippingId),
+            totalCost: this.getTotalCost(),
+            products: this.items.map(item => ({
+                productId: item.id,
+                quantity: item.quantity
+            }))
+        };
+
+        try {
+            const response = await fetch('/api/orders/my', {
+                method: 'POST',
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(orderData)
+            });
+
+            if (response.ok) {
+                const result = await response.text();
+                alert(result);
+                // Очищаем корзину после успешного оформления
+                this.clear();
+                // Перенаправляем на страницу с подтверждением заказа
+                window.location.href = '/account';
+            } else {
+                const error = await response.text();
+                alert('Ошибка при оформлении заказа: ' + error);
+            }
+        } catch (error) {
+            console.error('Ошибка при оформлении заказа:', error);
+            alert('Произошла ошибка при оформлении заказа. Пожалуйста, попробуйте позже.');
+        }
+    }
+
+    getTotalCost() {
+        return this.items.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+    }
+
+    // Добавляем обработчик кнопки оформления заказа
+    setupCheckoutButton() {
+        const checkoutBtn = document.querySelector('.checkout-btn');
+        if (checkoutBtn) {
+            checkoutBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                this.checkout();
+            });
+        }
     }
 
 }

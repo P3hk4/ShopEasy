@@ -11,7 +11,10 @@ class Account {
 
         this.loadUserData();
         this.loadOrders();
+        this.loadShippingAddresses();
         this.setupEventListeners();
+        this.setupShippingModal();
+        this.setupLogoutButton();
     }
 
     async loadUserData() {
@@ -156,8 +159,10 @@ class Account {
                 // Закрываем модальное окно
                 const modal = bootstrap.Modal.getInstance(document.getElementById('editProfileModal'));
                 modal.hide();
-                window.location.reload(); // ← Перезагрузка страницы
                 alert(successMessage || "Изменения сохранены успешно!");
+
+                window.location.reload(); // ← Перезагрузка страницы
+
             } else {
                 // Если API возвращает текст ошибки (например, "Пароль слишком короткий")
                 const errorText = await response.text();
@@ -171,7 +176,7 @@ class Account {
 
     async viewOrderDetails(orderId) {
         try {
-            const response = await fetch(`/api/orders/${orderId}`, {
+            const response = await fetch(`/api/orders/id/${orderId}`, {
                 method: 'GET',
                 headers: {
                     'Authorization': `Bearer ${this.accessToken}`,
@@ -181,7 +186,7 @@ class Account {
 
             if (response.ok) {
                 const orderDetails = await response.json();
-                // Здесь можно открыть модальное окно с деталями заказа
+                // Показываем модальное окно с деталями заказа
                 this.showOrderDetailsModal(orderDetails);
             } else {
                 throw new Error('Ошибка загрузки деталей заказа');
@@ -193,9 +198,240 @@ class Account {
     }
 
     showOrderDetailsModal(orderDetails) {
-        // Реализация отображения модального окна с деталями заказа
-        console.log("Детали заказа:", orderDetails);
-        alert(`Детали заказа #${orderDetails.orderId}\nСумма: ${orderDetails.totalCost} ₽`);
+        // Устанавливаем номер заказа
+        document.getElementById('order-details-id').textContent = orderDetails.orderId;
+
+        // Очищаем список товаров
+        const productsList = document.getElementById('order-products-list');
+        productsList.innerHTML = '';
+
+        // Добавляем товары в список
+        let totalSum = 0;
+
+        if (orderDetails.orderProducts && orderDetails.orderProducts.length > 0) {
+            // Создаем массив промисов для загрузки информации о товарах
+            const productPromises = orderDetails.orderProducts.map(item => {
+                return fetch(`/api/products/id/${item.productId}`)
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Ошибка загрузки товара');
+                        }
+                        return response.json();
+                    })
+                    .then(product => {
+                        return {
+                            productId: item.productId,
+                            count: item.count,
+                            productData: product
+                        };
+                    })
+                    .catch(error => {
+                        console.error(`Ошибка загрузки товара ${item.productId}:`, error);
+                        return {
+                            productId: item.productId,
+                            count: item.count,
+                            productData: {
+                                name: `Товар #${item.productId}`,
+                                price: 0,
+                                categoryId: null
+                            }
+                        };
+                    });
+            });
+
+            // Ожидаем загрузку всех товаров
+            Promise.all(productPromises)
+                .then(products => {
+                    products.forEach(item => {
+                        const product = item.productData;
+                        const sum = product.price * item.count;
+                        totalSum += sum;
+
+                        const row = document.createElement('tr');
+                        row.innerHTML = `
+                        <td>
+                            <div class="d-flex align-items-center">
+                                <img src="/assets/img/product_category_${product.categoryId?.toString().padStart(3, '0')}.jpg"
+                                     class="img-thumbnail me-3" 
+                                     style="width: 60px; height: 60px; object-fit: cover" 
+                                     alt="${product.name}">
+                                <div>
+                                    <h6 class="mb-1">${product.name}</h6>
+                                    <small class="text-muted">Арт. ${item.productId}</small>
+                                </div>
+                            </div>
+                        </td>
+                        <td>${item.count}</td>
+                        <td>${product.price.toLocaleString()} ₽</td>
+                        <td>${sum.toLocaleString()} ₽</td>
+                    `;
+                        productsList.appendChild(row);
+                    });
+
+                    // Устанавливаем общую сумму
+                    document.getElementById('order-total-sum').textContent = `${totalSum.toLocaleString()} ₽`;
+                })
+                .catch(error => {
+                    console.error("Ошибка загрузки товаров:", error);
+                    productsList.innerHTML = `
+                    <tr>
+                        <td colspan="4" class="text-center py-4">Произошла ошибка при загрузке товаров</td>
+                    </tr>
+                `;
+                });
+        } else {
+            productsList.innerHTML = `
+            <tr>
+                <td colspan="4" class="text-center py-4">Нет информации о товарах</td>
+            </tr>
+        `;
+        }
+
+        // Показываем модальное окно
+        const modal = new bootstrap.Modal(document.getElementById('orderDetailsModal'));
+        modal.show();
+    }
+
+    async loadShippingAddresses() {
+        try {
+            const response = await fetch('/api/shippings/my', {
+                method: 'GET',
+                headers: {
+                    'Authorization': `Bearer ${this.accessToken}`,
+                    'Content-Type': 'application/json'
+                }
+            });
+
+            if (response.ok) {
+                const addresses = await response.json();
+                this.displayShippingAddresses(addresses);
+            } else {
+                throw new Error('Ошибка загрузки адресов доставки');
+            }
+        } catch (error) {
+            console.error("Ошибка загрузки адресов доставки:", error);
+        }
+    }
+
+    displayShippingAddresses(addresses) {
+        const container = document.getElementById('shipping-addresses-list');
+        if (!addresses || addresses.length === 0) {
+            container.innerHTML = `
+                <tr>
+                    <td colspan="5" class="text-center py-4">У вас пока нет сохранённых адресов</td>
+                </tr>
+            `;
+            return;
+        }
+
+        container.innerHTML = addresses.map(address => `
+            <tr>
+                <td>${address.shippingId}</td>
+                <td>${address.city}</td>
+                <td>${address.address}</td>
+                <td>${address.postCode}</td>
+                <td>
+                    <button class="btn btn-sm btn-outline-danger delete-shipping" data-shipping-id="${address.shippingId}">
+                        <i class="fas fa-trash"></i> Удалить
+                    </button>
+                </td>
+            </tr>
+        `).join('');
+    }
+
+    setupShippingModal() {
+        // Обработчик сохранения нового адреса
+        document.getElementById('save-shipping-address')?.addEventListener('click', async () => {
+            const city = document.getElementById('shipping-city').value;
+            const address = document.getElementById('shipping-address').value;
+            const postCode = document.getElementById('shipping-postCode').value;
+
+            if (!city || !address || !postCode) {
+                alert('Заполните все поля');
+                return;
+            }
+
+            try {
+                const response = await fetch('/api/shippings/my', {
+                    method: 'PUT',
+                    headers: {
+                        'Authorization': `Bearer ${this.accessToken}`,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        city,
+                        address,
+                        postCode
+                    })
+                });
+
+                if (response.ok) {
+                    const result = await response.text();
+                    alert(result);
+                    // Закрываем модальное окно
+                    const modal = bootstrap.Modal.getInstance(document.getElementById('addShippingModal'));
+                    modal.hide();
+                    // Очищаем форму
+                    document.getElementById('shipping-form').reset();
+                    // Обновляем список адресов
+                    this.loadShippingAddresses();
+                } else {
+                    const error = await response.text();
+                    throw new Error(error || 'Ошибка сохранения адреса');
+                }
+            } catch (error) {
+                console.error("Ошибка сохранения адреса:", error);
+                alert(error.message || "Произошла ошибка при сохранении адреса");
+            }
+        });
+
+        // Обработчик удаления адреса
+        document.addEventListener('click', async (e) => {
+            if (e.target.closest('.delete-shipping')) {
+                const shippingId = e.target.closest('.delete-shipping').dataset.shippingId;
+                if (confirm('Вы уверены, что хотите удалить этот адрес?')) {
+                    try {
+                        const response = await fetch(`/api/shippings/my/${shippingId}`, {
+                            method: 'DELETE',
+                            headers: {
+                                'Authorization': `Bearer ${this.accessToken}`,
+                                'Content-Type': 'application/json'
+                            }
+                        });
+
+                        if (response.ok) {
+                            const result = await response.text();
+                            alert(result);
+                            // Обновляем список адресов
+                            this.loadShippingAddresses();
+                        } else {
+                            const error = await response.text();
+                            throw new Error(error || 'Ошибка удаления адреса');
+                        }
+                    } catch (error) {
+                        console.error("Ошибка удаления адреса:", error);
+                        alert(error.message || "Произошла ошибка при удалении адреса");
+                    }
+                }
+            }
+        });
+    }
+
+    setupLogoutButton() {
+        document.getElementById('logout-btn')?.addEventListener('click', () => {
+            if (confirm('Вы уверены, что хотите выйти из аккаунта?')) {
+                this.logout();
+            }
+        });
+    }
+
+    logout() {
+        // Очищаем данные авторизации
+        localStorage.removeItem('accessToken');
+        localStorage.removeItem('userId');
+
+        // Перенаправляем на страницу входа
+        window.location.href = '/login';
     }
 }
 

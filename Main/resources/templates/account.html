@@ -33,15 +33,9 @@
     <div class="w-100 d-flex justify-content-between">
       <div>
         <i class="fa fa-envelope mx-2"></i>
-        <a class="navbar-sm-brand text-light text-decoration-none" href="mailto:info@company.com">info@company.com</a>
+        <a class="navbar-sm-brand text-light text-decoration-none" href="mailto:EasyShop@company.com">EasyShop@company.com</a>
         <i class="fa fa-phone mx-2"></i>
         <a class="navbar-sm-brand text-light text-decoration-none" href="tel:010-020-0340">010-020-0340</a>
-      </div>
-      <div>
-        <a class="text-light" href="https://fb.com/templatemo" target="_blank" rel="sponsored"><i class="fab fa-facebook-f fa-sm fa-fw me-2"></i></a>
-        <a class="text-light" href="https://www.instagram.com/" target="_blank"><i class="fab fa-instagram fa-sm fa-fw me-2"></i></a>
-        <a class="text-light" href="https://twitter.com/" target="_blank"><i class="fab fa-twitter fa-sm fa-fw me-2"></i></a>
-        <a class="text-light" href="https://www.linkedin.com/" target="_blank"><i class="fab fa-linkedin fa-sm fa-fw"></i></a>
       </div>
     </div>
   </div>
@@ -52,7 +46,7 @@
 <nav class="navbar navbar-expand-lg navbar-light shadow">
   <div class="container d-flex justify-content-between align-items-center">
 
-    <a class="navbar-brand text-success logo h1 align-self-center" href="index">
+    <a class="navbar-brand text-success logo h1 align-self-center" href="/">
       Easy Shop
     </a>
 
@@ -69,9 +63,6 @@
           <li class="nav-item">
             <a class="nav-link" href="/shop">Магазин</a>
           </li>
-          <li class="nav-item">
-            <a class="nav-link" href="/contact">Контакты</a>
-          </li>
         </ul>
       </div>
       <div class="navbar align-self-center d-flex">
@@ -83,9 +74,6 @@
             </div>
           </div>
         </div>
-        <a class="nav-icon d-none d-lg-inline" href="#" data-bs-toggle="modal" data-bs-target="#templatemo_search">
-          <i class="fa fa-fw fa-search text-dark mr-2"></i>
-        </a>
         <a class="nav-icon position-relative text-decoration-none" href="/basket">
           <i class="fa fa-fw fa-cart-arrow-down text-dark mr-1"></i>
           <span class="position-absolute top-0 left-100 translate-middle badge rounded-pill bg-light text-dark cart-count" style="display: none;">0</span>
@@ -99,23 +87,6 @@
   </div>
 </nav>
 <!-- Close Header -->
-
-<!-- Modal -->
-<div class="modal fade bg-white" id="templatemo_search" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-lg" role="document">
-    <div class="w-100 pt-1 mb-5 text-right">
-      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-    </div>
-    <form action="" method="get" class="modal-content modal-body border-0 p-0">
-      <div class="input-group mb-2">
-        <input type="text" class="form-control" id="inputModalSearch" name="q" placeholder="Search ...">
-        <button type="submit" class="input-group-text bg-success text-light">
-          <i class="fa fa-fw fa-search text-white"></i>
-        </button>
-      </div>
-    </form>
-  </div>
-</div>
 
 <!-- Start Content -->
 <div class="container py-5">
@@ -142,9 +113,14 @@
             <p class="text-muted mb-1" id="user-username">Логин</p>
             <p class="text-muted mb-4" id="user-email">Email</p>
           </div>
-          <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#editProfileModal">
-            Редактировать профиль
-          </button>
+          <div class="d-flex gap-2">
+            <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#editProfileModal">
+              Редактировать профиль
+            </button>
+            <button type="button" class="btn btn-outline-danger" id="logout-btn">
+              <i class="fas fa-sign-out-alt me-1"></i> Выйти
+            </button>
+          </div>
         </div>
       </div>
     </div>
@@ -207,6 +183,36 @@
           </div>
         </div>
       </div>
+
+      <div class="card mb-4">
+        <div class="card-body">
+          <div class="d-flex justify-content-between align-items-center mb-3">
+            <h5 class="card-title mb-0">Мои адреса доставки</h5>
+            <button type="button" class="btn btn-sm btn-outline-success" data-bs-toggle="modal" data-bs-target="#addShippingModal">
+              <i class="fas fa-plus me-1"></i> Добавить адрес
+            </button>
+          </div>
+          <div class="table-responsive">
+            <table class="table table-hover">
+              <thead>
+              <tr>
+                <th>ID</th>
+                <th>Город</th>
+                <th>Адрес</th>
+                <th>Почтовый индекс</th>
+                <th>Действия</th>
+              </tr>
+              </thead>
+              <tbody id="shipping-addresses-list">
+              <!-- Адреса будут загружены здесь -->
+              <tr>
+                <td colspan="5" class="text-center py-4">У вас пока нет сохранённых адресов</td>
+              </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </div>
@@ -252,17 +258,44 @@
   </div>
 </div>
 
+<!-- Модальное окно добавления адреса -->
+<div class="modal fade" id="addShippingModal" tabindex="-1" aria-labelledby="addShippingModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="addShippingModalLabel">Добавить адрес доставки</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form id="shipping-form">
+          <div class="mb-3">
+            <label for="shipping-city" class="form-label">Город</label>
+            <input type="text" class="form-control" id="shipping-city" required>
+          </div>
+          <div class="mb-3">
+            <label for="shipping-address" class="form-label">Адрес</label>
+            <input type="text" class="form-control" id="shipping-address" required>
+          </div>
+          <div class="mb-3">
+            <label for="shipping-postCode" class="form-label">Почтовый индекс</label>
+            <input type="text" class="form-control" id="shipping-postCode" required>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
+        <button type="button" class="btn btn-success" id="save-shipping-address">Сохранить адрес</button>
+      </div>
+    </div>
+  </div>
+</div>
 
 <!-- Start Brands -->
 <section class="bg-light py-5">
   <div class="container my-4">
     <div class="row text-center py-3">
       <div class="col-lg-6 m-auto">
-        <h1 class="h1">Our Brands</h1>
-        <p>
-          Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-          Lorem ipsum dolor sit amet.
-        </p>
+        <h1 class="h1">Наши бренды</h1>
       </div>
       <div class="col-lg-9 m-auto tempaltemo-carousel">
         <div class="row d-flex flex-row">
@@ -363,7 +396,7 @@
     <div class="row">
 
       <div class="col-md-4 pt-5">
-        <h2 class="h2 text-success border-bottom pb-3 border-light logo">Easy Shop</h2>
+        <h2 class="h2 text-success border-bottom pb-3 border-light logo">Zay Shop</h2>
         <ul class="list-unstyled text-light footer-link-list">
           <li>
             <i class="fas fa-map-marker-alt fa-fw"></i>
@@ -387,7 +420,6 @@
         <h2 class="h2 text-light border-bottom pb-3 border-light">Прочее</h2>
         <ul class="list-unstyled text-light footer-link-list">
           <li><a class="text-decoration-none" href="/">Домой</a></li>
-          <li><a class="text-decoration-none" href="/contact">Связаться с нами</a></li>
         </ul>
       </div>
 
@@ -414,10 +446,6 @@
         </ul>
       </div>
       <div class="col-auto">
-        <label class="sr-only" for="subscribeEmail">Email address</label>
-        <div class="input-group mb-2">
-          <input type="text" class="form-control bg-dark border-light" id="subscribeEmail" placeholder="Email address">
-          <div class="input-group-text btn-success text-light">Subscribe</div>
         </div>
       </div>
     </div>
@@ -438,6 +466,46 @@
 
 </footer>
 <!-- End Footer -->
+
+
+<!-- Модальное окно деталей заказа -->
+<div class="modal fade" id="orderDetailsModal" tabindex="-1" aria-labelledby="orderDetailsModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="orderDetailsModalLabel">Детали заказа #<span id="order-details-id"></span></h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="table-responsive">
+          <table class="table">
+            <thead>
+            <tr>
+              <th>Товар</th>
+              <th>Количество</th>
+              <th>Цена</th>
+              <th>Сумма</th>
+            </tr>
+            </thead>
+            <tbody id="order-products-list">
+            <!-- Товары будут загружены здесь -->
+            </tbody>
+            <tfoot>
+            <tr>
+              <td colspan="3" class="text-end fw-bold">Итого:</td>
+              <td class="fw-bold" id="order-total-sum">0 ₽</td>
+            </tr>
+            </tfoot>
+          </table>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 
 </body>
 </html>

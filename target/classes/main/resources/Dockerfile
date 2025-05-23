@@ -1,10 +1,5 @@
-# Используем официальный образ PostgreSQL
-FROM postgres:latest
+# Используем официальный образ PostgreSQL (лучше указать конкретную версию)
+FROM postgres:15-alpine
 
-# Устанавливаем переменные окружения
-ENV POSTGRES_DB=EasyShopDocker
-ENV POSTGRES_USER=postgres
-ENV POSTGRES_PASSWORD=pa33word
-
-# Открываем порт PostgreSQL
+# Открываем порт PostgreSQL (чисто декларативно, реальное пробрасывание делается в compose)
 EXPOSE 5432

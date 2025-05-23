@@ -3,59 +3,65 @@ version: '3.8'
 services:
   postgres:
     build:
-      context: ./src/main/resources
+      context: ./src/main/resources  # Сборка образа из Dockerfile в указанной директории
       dockerfile: Dockerfile
-    container_name: easyshop-db
+    container_name: easyshop-db      # Имя контейнера
     environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: pa33word
-      POSTGRES_DB: EasyShopDocker
+      POSTGRES_USER: postgres        # Логин пользователя PostgreSQL
+      POSTGRES_PASSWORD: pa33word    # Пароль пользователя (небезопасно хранить в открытом виде)
+      POSTGRES_DB: EasyShopDocker    # Имя создаваемой БД
     volumes:
-      - postgres_data:/var/lib/postgresql/data
+      - postgres_data:/var/lib/postgresql/data  # Том для хранения данных БД
     ports:
-      - "5432:5432"
-    healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U postgres -d EasyShopDocker"]
-      interval: 5s
-      timeout: 5s
-      retries: 5
+      - "5432:5432"                  # Проброс порта PostgreSQL на хост
+    healthcheck: # Проверка здоровья сервиса
+      test: [ "CMD-SHELL", "pg_isready -U postgres -d EasyShopDocker" ]
+      interval: 5s                   # Интервал проверок
+      timeout: 5s                    # Таймаут
+      retries: 5                     # Количество попыток
 
   easyshop-backend:
     build:
-      context: .
+      context: .                    # Сборка из Dockerfile в корне проекта
       dockerfile: Dockerfile
-    container_name: easyshop-app
-    depends_on:
+    container_name: easyshop-app    # Имя контейнера
+    depends_on: # Зависимость от сервиса postgres
       postgres:
-        condition: service_healthy
+        condition: service_healthy   # Запуск только после успешного старта БД
+
+    # Настройки подключения к БД
     environment:
       DB_URL: jdbc:postgresql://postgres:5432/EasyShopDocker
       DB_USERNAME: postgres
       DB_PASSWORD: pa33word
 
-      SPRING_JPA_HIBERNATE_DDL_AUTO: none
-      SPRING_JPA_SHOW_SQL: "true"
+      # Настройки Hibernate/JPA
+      SPRING_JPA_HIBERNATE_DDL_AUTO: none          # Отключение автоматического создания схемы
+      SPRING_JPA_SHOW_SQL: "true"                 # Логирование SQL
       SPRING_JPA_PROPERTIES_HIBERNATE_DIALECT: org.hibernate.dialect.PostgreSQLDialect
-      SPRING_JPA_GENERATE_DDL: "false"
+      SPRING_JPA_GENERATE_DDL: "false"             # Отключение генерации DDL
 
-      SPRING_FLYWAY_BASELINE_ON_MIGRATE: "true"
-      SPRING_FLYWAY_ENABLED: "true"
-      SPRING_FLYWAY_LOCATIONS: "classpath:Database"
-      SPRING_FLYWAY_SQL_MIGRATION_PREFIX: "V"
-      SPRING_FLYWAY_SQL_MIGRATION_SUFFIXES: ".sql"
+      # Настройки Flyway (миграции БД)
+      SPRING_FLYWAY_BASELINE_ON_MIGRATE: "true"    # Базовые миграции
+      SPRING_FLYWAY_ENABLED: "true"                # Включение Flyway
+      SPRING_FLYWAY_LOCATIONS: "classpath:Database" # Путь к миграциям
+      SPRING_FLYWAY_SQL_MIGRATION_PREFIX: "V"      # Префикс файлов миграций
+      SPRING_FLYWAY_SQL_MIGRATION_SUFFIXES: ".sql" # Суффикс файлов миграций
       SPRING_FLYWAY_URL: jdbc:postgresql://postgres:5432/EasyShopDocker
       SPRING_FLYWAY_USER: postgres
       SPRING_FLYWAY_PASSWORD: pa33word
 
+      # Настройки JWT
       JWT_SECRET: "c29tZXN1cGVyc2VjcmV0a2V5d2l0aG91dGRhc2hlcwc29tZXN1cGVyc2VjcmV0a2V5d2l0aG91dGRhc2hlcwc29tZXN1cGVyc2VjcmV0a2V5d2l0aG91dGRhc2hlcw"
-      JWT_EXPIRATION: "86400000"
+      JWT_EXPIRATION: "86400000"                   # Время жизни токена (24 часа)
 
-      SPRING_APPLICATION_NAME: "EASYSHOP"
+      SPRING_APPLICATION_NAME: "EASYSHOP"          # Имя приложения
+
     ports:
-      - "8080:8080"
+      - "8080:8080"                               # Проброс порта приложения
     volumes:
-      - ./target:/app/target
-    restart: unless-stopped
+      - ./target:/app/target                      # Монтирование директории с артефактами
+    restart: unless-stopped                       # Политика перезапуска
 
 volumes:
-  postgres_data:
+  postgres_data:    # Том для хранения данных PostgreSQL (сохраняется между перезапусками)
